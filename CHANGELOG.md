@@ -1,6 +1,16 @@
 # Changelog
 
 
+## 2025-11-03 v1.0.1
+
+### Updated React type definitions
+
+Updated `@types/react` and `@types/react-dom` from version 19.0.0 to 19.2.2 to include the latest type definitions and bug fixes for React 19.
+
+The pnpm overrides have been consolidated to the root `package.json` for better consistency across the monorepo.
+
+---
+
 ## 2025-11-03 v1.0.0
 
 ### Prisma client migration to Rust-free client
