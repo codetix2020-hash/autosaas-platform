@@ -13,6 +13,10 @@ The pnpm overrides have been consolidated to the root `package.json` for better 
 
 Added `onlyBuiltDependencies` configuration to pnpm settings to optimize installation time by only building Prisma-related packages (`@prisma/client`, `prisma`, and `prisma-zod-generator`) when needed. This reduces unnecessary rebuilds and speeds up dependency installation in the monorepo.
 
+### Added pg dependency
+
+Added `pg` (PostgreSQL client) as a dependency to support the Prisma Rust-free client migration. The `pg` package is required by the Prisma database adapter for PostgreSQL connections.
+
 ---
 
 ## 2025-11-03 v1.0.0
