@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 2025-11-03
+## 2025-11-03 v1.0.0
 
 ### Prisma client migration to Rust-free client
 
