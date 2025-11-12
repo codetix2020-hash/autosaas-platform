@@ -1,5 +1,12 @@
 # Changelog
 
+## 2025-11-12 v1.0.8
+
+### Fix missing fields in auth schema
+
+Added missing fields (`aaguid` for Passkey and `displayUsername` for User) in the schema.
+This was causing the passkeys creation to fail.
+
 ## 2025-11-12 v1.0.7
 
 ### Fixed mobile menu closing issue
