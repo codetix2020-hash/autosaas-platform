@@ -1,5 +1,13 @@
 # Changelog
 
+# 2025-11-25 v1.1.4
+
+### Fix OpenAPI schema
+
+Fixed was an issue that would cause custom OpenAPI endpoints to not be reachable throught the `/api` path.
+
+---
+
 # 2025-11-23 v1.1.3
 
 ### Fix active sessions block
