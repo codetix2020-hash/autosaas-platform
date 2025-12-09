@@ -19,6 +19,13 @@ export type Config = {
 		enableBilling: boolean;
 		enableOnboarding: boolean;
 	};
+	contentflow: {
+		enabled: boolean;
+		enableAIGeneration: boolean;
+		label: string;
+		description: string;
+		requiredPlan: string | null;
+	};
 	auth: {
 		enableSignup: boolean;
 		enableMagicLink: boolean;

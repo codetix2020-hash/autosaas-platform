@@ -3,6 +3,7 @@
 import React from "react";
 import { useBookings, useCreateBooking, useUpdateBooking, useDeleteBooking } from "@/hooks/use-reservas";
 import { orpcClient } from "@shared/lib/orpc-client";
+import Link from "next/link";
 import { useState } from "react";
 
 type FormData = {
@@ -182,6 +183,34 @@ export default function ReservasPage() {
         </button>
       </div>
 
+      {/* Sub Navigation */}
+      <div className="flex gap-2 border-b pb-4">
+        <Link
+          href="."
+          className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium"
+        >
+          📅 Reservas
+        </Link>
+        <Link
+          href="servicios"
+          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
+        >
+          💇 Servicios
+        </Link>
+        <Link
+          href="profesionales"
+          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
+        >
+          👩‍💼 Profesionales
+        </Link>
+        <Link
+          href="configuracion"
+          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
+        >
+          ⚙️ Configuración
+        </Link>
+      </div>
+
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-6 rounded-lg shadow-sm border">
@@ -260,33 +289,64 @@ export default function ReservasPage() {
       {/* List View */}
       {viewMode === "list" && items.length > 0 && (
         <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="w-full">
             <thead className="bg-gray-50 border-b">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client Id</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Professional Id</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service Id</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client Name</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Cliente</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Fecha</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Hora</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Estado</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Precio</th>
+                <th className="px-4 py-3 text-right text-sm font-medium text-gray-500">Acciones</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {items.map((item: { id: string; client_id?: string; professional_id?: string; service_id?: string; client_name?: string }) => (
+            <tbody className="divide-y">
+              {items.map((item: any) => (
                 <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.client_id || "-"}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.professional_id || "-"}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.service_id || "-"}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.client_name || "-"}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                  <td className="px-4 py-3">
+                    <div className="font-medium text-gray-900">{item.client_name}</div>
+                    <div className="text-sm text-gray-500">{item.client_email}</div>
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-700">
+                    {item.date ? new Date(item.date).toLocaleDateString('es-ES', { 
+                      weekday: 'short', 
+                      day: 'numeric', 
+                      month: 'short' 
+                    }) : '-'}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-700">
+                    {item.start_time?.slice(0, 5)} - {item.end_time?.slice(0, 5)}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      item.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                      item.status === 'confirmed' ? 'bg-blue-100 text-blue-700' :
+                      item.status === 'completed' ? 'bg-green-100 text-green-700' :
+                      item.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                      item.status === 'no_show' ? 'bg-gray-100 text-gray-700' :
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {item.status === 'pending' ? '⏳ Pendiente' :
+                       item.status === 'confirmed' ? '✓ Confirmada' :
+                       item.status === 'completed' ? '✓ Completada' :
+                       item.status === 'cancelled' ? '✗ Cancelada' :
+                       item.status === 'no_show' ? '⚠ No asistió' :
+                       item.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                    €{item.price || 0}
+                  </td>
+                  <td className="px-4 py-3 text-right">
                     <button
                       onClick={() => handleEdit(item)}
-                      className="text-blue-600 hover:text-blue-900"
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium mr-3"
                     >
                       Editar
                     </button>
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="text-red-600 hover:text-red-900"
+                      className="text-red-600 hover:text-red-800 text-sm font-medium"
                     >
                       Eliminar
                     </button>

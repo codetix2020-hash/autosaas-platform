@@ -12,12 +12,19 @@ type Service = {
   description?: string;
 };
 
+type Professional = {
+  id: string;
+  name: string;
+  specialties?: string;
+  avatar_url?: string;
+};
+
 type TimeSlot = {
   time: string;
   available: boolean;
 };
 
-type BookingStep = "service" | "datetime" | "details" | "confirm";
+type BookingStep = "service" | "professional" | "datetime" | "details" | "confirm";
 
 export default function ReservasPublicPage() {
   const params = useParams();
@@ -35,7 +42,9 @@ export default function ReservasPublicPage() {
   
   // Selecciones del usuario
   const [services, setServices] = useState<Service[]>([]);
+  const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedProfessional, setSelectedProfessional] = useState<Professional | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
@@ -51,20 +60,21 @@ export default function ReservasPublicPage() {
     async function loadBusiness() {
       try {
         setLoading(true);
-        // TODO: Fetch real business data by slug
-        // const res = await fetch(`/api/public/reservas/${slug}`);
-        // const data = await res.json();
+        const res = await fetch(`/api/public/reservas/${slug}`);
+        const data = await res.json();
         
-        // Datos de ejemplo
-        setBusinessName("Mi Negocio");
-        setServices([
-          { id: "1", name: "Servicio Básico", duration: 30, price: 25, description: "Descripción del servicio básico" },
-          { id: "2", name: "Servicio Premium", duration: 60, price: 45, description: "Descripción del servicio premium" },
-          { id: "3", name: "Servicio VIP", duration: 90, price: 75, description: "Descripción del servicio VIP" },
-        ]);
+        if (!res.ok) {
+          throw new Error(data.error || "Error loading business");
+        }
+        
+        setBusinessName(data.business?.name || "Mi Salón");
+        setBusinessLogo(data.business?.logo);
+        setPrimaryColor(data.business?.primaryColor || "#3B82F6");
+        setServices(data.services || []);
+        setProfessionals(data.professionals || []);
         setLoading(false);
-      } catch (err) {
-        setError("No se pudo cargar la información del negocio");
+      } catch (err: any) {
+        setError(err.message || "No se pudo cargar la información del negocio");
         setLoading(false);
       }
     }
@@ -102,17 +112,32 @@ export default function ReservasPublicPage() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      // TODO: Submit real booking
-      // await fetch(`/api/public/reservas/book`, {
-      //   method: 'POST',
-      //   body: JSON.stringify({ ... })
-      // });
+      setError(null);
       
-      // Simular éxito
-      await new Promise(r => setTimeout(r, 1000));
+      const res = await fetch(`/api/public/reservas/${slug}/book`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          service_id: selectedService?.id,
+          professional_id: selectedProfessional?.id || null,
+          client_name: clientName,
+          client_email: clientEmail,
+          client_phone: clientPhone,
+          date: selectedDate,
+          start_time: selectedTime,
+          notes: clientNotes,
+        }),
+      });
+      
+      const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.error || "Error al crear la reserva");
+      }
+      
       setSuccess(true);
-    } catch (err) {
-      setError("Error al crear la reserva. Por favor intenta de nuevo.");
+    } catch (err: any) {
+      setError(err.message || "Error al crear la reserva. Por favor intenta de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -193,17 +218,17 @@ export default function ReservasPublicPage() {
       {/* Progress Steps */}
       <div className="max-w-3xl mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-8">
-          {["service", "datetime", "details", "confirm"].map((s, i) => (
+          {["service", "professional", "datetime", "details", "confirm"].map((s, i) => (
             <div key={s} className="flex items-center">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                 step === s ? "bg-blue-600 text-white" :
-                ["service", "datetime", "details", "confirm"].indexOf(step) > i ? "bg-green-500 text-white" :
+                ["service", "professional", "datetime", "details", "confirm"].indexOf(step) > i ? "bg-green-500 text-white" :
                 "bg-gray-200 text-gray-500"
               }`}>
-                {["service", "datetime", "details", "confirm"].indexOf(step) > i ? "✓" : i + 1}
+                {["service", "professional", "datetime", "details", "confirm"].indexOf(step) > i ? "✓" : i + 1}
               </div>
-              {i < 3 && <div className={`w-12 sm:w-24 h-1 mx-2 ${
-                ["service", "datetime", "details", "confirm"].indexOf(step) > i ? "bg-green-500" : "bg-gray-200"
+              {i < 4 && <div className={`w-12 sm:w-24 h-1 mx-2 ${
+                ["service", "professional", "datetime", "details", "confirm"].indexOf(step) > i ? "bg-green-500" : "bg-gray-200"
               }`} />}
             </div>
           ))}
@@ -217,7 +242,7 @@ export default function ReservasPublicPage() {
               {services.map((service) => (
                 <button
                   key={service.id}
-                  onClick={() => { setSelectedService(service); setStep("datetime"); }}
+                  onClick={() => { setSelectedService(service); setStep("professional"); }}
                   className={`w-full p-4 rounded-xl border-2 text-left transition-all hover:border-blue-500 hover:shadow-md ${
                     selectedService?.id === service.id ? "border-blue-500 bg-blue-50" : "border-gray-200"
                   }`}
@@ -238,10 +263,70 @@ export default function ReservasPublicPage() {
           </div>
         )}
 
-        {/* Step 2: Seleccionar Fecha y Hora */}
-        {step === "datetime" && (
+        {/* Step 2: Seleccionar Profesional */}
+        {step === "professional" && (
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <button onClick={() => setStep("service")} className="text-blue-600 mb-4 flex items-center gap-1 hover:underline">
+              ← Volver
+            </button>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">Selecciona un profesional</h2>
+            
+            {professionals.length > 0 ? (
+              <div className="space-y-3">
+                <button
+                  onClick={() => { setSelectedProfessional(null); setStep("datetime"); }}
+                  className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                    selectedProfessional === null ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-blue-300"
+                  }`}
+                >
+                  <div className="font-semibold text-gray-900">Cualquier profesional disponible</div>
+                  <div className="text-sm text-gray-500">Te asignaremos el mejor disponible</div>
+                </button>
+                
+                {professionals.map((professional) => (
+                  <button
+                    key={professional.id}
+                    onClick={() => { setSelectedProfessional(professional); setStep("datetime"); }}
+                    className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                      selectedProfessional?.id === professional.id ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-blue-300"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      {professional.avatar_url ? (
+                        <img src={professional.avatar_url} alt={professional.name} className="w-12 h-12 rounded-full object-cover" />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                          {professional.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}
+                        </div>
+                      )}
+                      <div className="flex-1">
+                        <div className="font-semibold text-gray-900">{professional.name}</div>
+                        {professional.specialties && (
+                          <div className="text-sm text-gray-500">{professional.specialties}</div>
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500 mb-4">No hay profesionales disponibles</p>
+                <button
+                  onClick={() => setStep("datetime")}
+                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  Continuar sin seleccionar
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Step 3: Seleccionar Fecha y Hora */}
+        {step === "datetime" && (
+          <div className="bg-white rounded-2xl shadow-lg p-6">
+            <button onClick={() => setStep("professional")} className="text-blue-600 mb-4 flex items-center gap-1 hover:underline">
               ← Volver
             </button>
             <h2 className="text-xl font-bold text-gray-900 mb-6">Selecciona fecha y hora</h2>
@@ -306,8 +391,8 @@ export default function ReservasPublicPage() {
           </div>
         )}
 
-        {/* Step 3: Datos del Cliente */}
-        {step === "details" && (
+                   {/* Step 4: Datos del Cliente */}
+                   {step === "details" && (
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <button onClick={() => setStep("datetime")} className="text-blue-600 mb-4 flex items-center gap-1 hover:underline">
               ← Volver
@@ -373,8 +458,8 @@ export default function ReservasPublicPage() {
           </div>
         )}
 
-        {/* Step 4: Confirmar */}
-        {step === "confirm" && (
+                   {/* Step 5: Confirmar */}
+                   {step === "confirm" && (
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <button onClick={() => setStep("details")} className="text-blue-600 mb-4 flex items-center gap-1 hover:underline">
               ← Volver
@@ -382,17 +467,24 @@ export default function ReservasPublicPage() {
             <h2 className="text-xl font-bold text-gray-900 mb-6">Confirma tu reserva</h2>
             
             <div className="space-y-4 mb-6">
-              <div className="bg-gray-50 rounded-xl p-4">
-                <div className="text-sm text-gray-500 mb-1">Servicio</div>
-                <div className="font-semibold">{selectedService?.name}</div>
-                <div className="text-blue-600 font-bold">€{selectedService?.price}</div>
-              </div>
-              
-              <div className="bg-gray-50 rounded-xl p-4">
-                <div className="text-sm text-gray-500 mb-1">Fecha y hora</div>
-                <div className="font-semibold">{selectedDate} a las {selectedTime}</div>
-                <div className="text-gray-500">{selectedService?.duration} minutos</div>
-              </div>
+                         <div className="bg-gray-50 rounded-xl p-4">
+                           <div className="text-sm text-gray-500 mb-1">Servicio</div>
+                           <div className="font-semibold">{selectedService?.name}</div>
+                           <div className="text-blue-600 font-bold">€{selectedService?.price}</div>
+                         </div>
+                         
+                         {selectedProfessional && (
+                           <div className="bg-gray-50 rounded-xl p-4">
+                             <div className="text-sm text-gray-500 mb-1">Profesional</div>
+                             <div className="font-semibold">{selectedProfessional.name}</div>
+                           </div>
+                         )}
+                         
+                         <div className="bg-gray-50 rounded-xl p-4">
+                           <div className="text-sm text-gray-500 mb-1">Fecha y hora</div>
+                           <div className="font-semibold">{selectedDate} a las {selectedTime}</div>
+                           <div className="text-gray-500">{selectedService?.duration} minutos</div>
+                         </div>
               
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="text-sm text-gray-500 mb-1">Tus datos</div>

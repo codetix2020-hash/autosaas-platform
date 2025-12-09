@@ -53,6 +53,19 @@ export const config = {
 		// Whether you want the user to go through an onboarding form after signup (can be defined in the OnboardingForm.tsx)
 		enableOnboarding: true,
 	},
+	// ContentFlow AI - Módulo de gestión de contenido
+	contentflow: {
+		// Whether the ContentFlow module should be enabled
+		enabled: true,
+		// Whether AI content generation should be enabled
+		enableAIGeneration: true,
+		// Label for the feature
+		label: "ContentFlow AI",
+		// Description of the feature
+		description: "Gestión de contenido multi-plataforma con IA",
+		// Required plan (null = available for all, or "pro" / "enterprise")
+		requiredPlan: null,
+	},
 	// Authentication
 	auth: {
 		// Whether users should be able to create accounts (otherwise users can only be by admins)

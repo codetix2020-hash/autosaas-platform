@@ -69,6 +69,8 @@ export function SignupForm({ prefillEmail }: { prefillEmail?: string }) {
 		: (redirectTo ?? config.auth.redirectAfterSignIn);
 
 	const onSubmit = form.handleSubmit(async ({ email, password, name }) => {
+		console.log("[SignupForm] submit start", email);
+		
 		try {
 			const { error } = await (config.auth.enablePasswordLogin
 				? await authClient.signUp.email({
@@ -82,6 +84,8 @@ export function SignupForm({ prefillEmail }: { prefillEmail?: string }) {
 						name,
 						callbackURL: redirectPath,
 					}));
+
+			console.log("[SignupForm] signup result", { error });
 
 			if (error) {
 				throw error;
@@ -100,6 +104,8 @@ export function SignupForm({ prefillEmail }: { prefillEmail?: string }) {
 				router.push(config.auth.redirectAfterSignIn);
 			}
 		} catch (e) {
+			console.error("[SignupForm] signup error", e);
+			console.error("[SignupForm] signup raw error", JSON.stringify(e, null, 2));
 			form.setError("root", {
 				message: getAuthErrorMessage(
 					e && typeof e === "object" && "code" in e
@@ -227,9 +233,9 @@ export function SignupForm({ prefillEmail }: { prefillEmail?: string }) {
 								/>
 							)}
 
-							<Button loading={form.formState.isSubmitting}>
-								{t("auth.signup.submit")}
-							</Button>
+						<Button type="submit" loading={form.formState.isSubmitting}>
+							{t("auth.signup.submit")}
+						</Button>
 						</form>
 					</Form>
 

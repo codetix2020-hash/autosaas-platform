@@ -1,5 +1,5 @@
 import { config } from "@repo/config";
-import { SignupForm } from "@saas/auth/components/SignupForm";
+import { SignupPageClient } from "@saas/auth/components/SignupPageClient";
 import { getInvitation } from "@saas/auth/lib/server";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
@@ -41,8 +41,8 @@ export default async function SignupPage({
 			redirect(withQuery("/auth/login", params));
 		}
 
-		return <SignupForm prefillEmail={invitation.email} />;
+		return <SignupPageClient prefillEmail={invitation.email} />;
 	}
 
-	return <SignupForm />;
+	return <SignupPageClient />;
 }
