@@ -1,0 +1,47 @@
+{
+  "id": "contentflow-ai",
+  "name": "ContentFlow AI",
+  "description": "Calendario de contenido IA para micro-agencias de marketing",
+  "vpu": "El único calendario que genera 30 días de contenido multi-plataforma en 5 minutos",
+  "target_audience": "Agencias con 3-15 clientes",
+  "pricing": "€49/mes",
+  "database": {
+    "new_tables": [
+      {
+        "name": "agencies",
+        "columns": [
+          "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+          "user_id UUID REFERENCES user NOT NULL",
+          "name TEXT NOT NULL",
+          "brand_voice JSONB",
+          "created_at TIMESTAMPTZ DEFAULT NOW()"
+        ],
+        "rls": ["CREATE POLICY \"Users manage own agencies\" ON agencies FOR ALL USING (auth.uid() = user_id)"]
+      },
+      {
+        "name": "agency_clients",
+        "columns": [
+          "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+          "agency_id UUID REFERENCES agencies NOT NULL",
+          "name TEXT NOT NULL",
+          "industry TEXT",
+          "approval_token TEXT UNIQUE",
+          "created_at TIMESTAMPTZ DEFAULT NOW()"
+        ]
+      },
+      {
+        "name": "content_calendar",
+        "columns": [
+          "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+          "client_id UUID REFERENCES agency_clients NOT NULL",
+          "scheduled_date DATE NOT NULL",
+          "platform TEXT NOT NULL",
+          "content_text TEXT NOT NULL",
+          "status TEXT DEFAULT 'draft'",
+          "created_at TIMESTAMPTZ DEFAULT NOW()"
+        ]
+      }
+    ]
+  }
+}
+

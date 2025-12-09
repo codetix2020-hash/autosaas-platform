@@ -1,0 +1,84 @@
+{
+  "blueprint": {
+    "id": "taskflow",
+    "name": "TaskFlow",
+    "description": "Gestión de tareas simple para equipos",
+    "vpu": "Organiza tu equipo en minutos",
+    "target_audience": "Pequeños equipos y freelancers",
+    "pricing": "€29/mes",
+    "database": {
+      "new_tables": [
+        {
+          "name": "tasks",
+          "columns": [
+            "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+            "organization_id TEXT NOT NULL",
+            "title TEXT NOT NULL",
+            "description TEXT",
+            "status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'in_progress', 'completed', 'cancelled'))",
+            "priority TEXT DEFAULT 'medium' CHECK (priority IN ('low', 'medium', 'high', 'urgent'))",
+            "due_date DATE",
+            "assigned_to TEXT",
+            "created_at TIMESTAMPTZ DEFAULT NOW()",
+            "updated_at TIMESTAMPTZ DEFAULT NOW()"
+          ]
+        }
+      ]
+    },
+    "routes": [
+      {
+        "path": "/taskflow",
+        "component": "TaskFlowDashboard",
+        "description": "Dashboard de tareas"
+      }
+    ]
+  },
+  "timestamp": "2025-12-08T09-50-58-078Z",
+  "results": [
+    {
+      "layer": 1,
+      "name": "Validate Blueprint",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "valid": true,
+        "warnings": []
+      }
+    },
+    {
+      "layer": 2,
+      "name": "Analyze Feasibility",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "feasible": true,
+        "dependencies": {
+          "supabase": true,
+          "anthropic": true
+        }
+      }
+    },
+    {
+      "layer": 4,
+      "name": "Analyze Conflicts",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "conflicts": [],
+        "safe": true
+      }
+    },
+    {
+      "layer": 5,
+      "name": "Generate Plan",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "tables": 1,
+        "components": 0,
+        "routes": 1,
+        "apiRoutes": 0
+      }
+    }
+  ]
+}

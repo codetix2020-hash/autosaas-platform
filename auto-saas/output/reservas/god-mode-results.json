@@ -1,0 +1,369 @@
+{
+  "blueprint": "reservas",
+  "timestamp": "2025-12-08T12:08:07.602Z",
+  "duration": 2380,
+  "results": [
+    {
+      "layer": 1,
+      "name": "Validate Blueprint",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "valid": true,
+        "warnings": []
+      }
+    },
+    {
+      "layer": 2,
+      "name": "Analyze Feasibility",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "feasible": true,
+        "dependencies": {
+          "supabase": true,
+          "anthropic": true
+        }
+      }
+    },
+    {
+      "layer": 4,
+      "name": "Analyze Conflicts",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "conflicts": [],
+        "safe": true
+      }
+    },
+    {
+      "layer": 5,
+      "name": "Generate Plan",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "tables": 5,
+        "components": 0,
+        "routes": 5,
+        "apiRoutes": 0
+      }
+    },
+    {
+      "layer": 6,
+      "name": "Create Checkpoint",
+      "success": true,
+      "duration": 3,
+      "output": {
+        "checkpointFile": "auto-saas\\checkpoints\\reservas-2025-12-08T12-08-05-224Z.json"
+      }
+    },
+    {
+      "layer": 7,
+      "name": "Generate SQL",
+      "success": true,
+      "duration": 2,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\reservas\\migration.sql",
+        "tables": 5
+      }
+    },
+    {
+      "layer": 8,
+      "name": "Generate Types",
+      "success": true,
+      "duration": 2,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\reservas\\types.ts"
+      }
+    },
+    {
+      "layer": 9,
+      "name": "Generate API",
+      "success": true,
+      "duration": 2,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\reservas\\api-procedures.ts"
+      }
+    },
+    {
+      "layer": 10,
+      "name": "Generate Hooks",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\reservas\\hooks.ts"
+      }
+    },
+    {
+      "layer": 10.5,
+      "name": "Environment Check",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "missing": [],
+        "allPresent": true
+      }
+    },
+    {
+      "layer": 11,
+      "name": "Generate Components",
+      "success": true,
+      "duration": 2,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\reservas\\components.tsx"
+      }
+    },
+    {
+      "layer": 12,
+      "name": "Generate Pages",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\reservas\\pages.tsx"
+      }
+    },
+    {
+      "layer": 15,
+      "name": "Apply SQL",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "applied": false,
+        "reason": "disabled"
+      }
+    },
+    {
+      "layer": 14,
+      "name": "Feature Config",
+      "success": true,
+      "duration": 2325,
+      "output": {
+        "configured": true
+      }
+    },
+    {
+      "layer": 16,
+      "name": "Final Verification",
+      "success": true,
+      "duration": 2,
+      "output": {
+        "blueprintValid": true,
+        "sqlGenerated": true,
+        "typesGenerated": true,
+        "apiGenerated": true,
+        "hooksGenerated": true,
+        "componentsGenerated": true,
+        "pagesGenerated": true,
+        "noFatalErrors": true,
+        "allGenerated": true
+      }
+    },
+    {
+      "layer": 17,
+      "name": "Write to Project",
+      "success": true,
+      "duration": 11,
+      "output": {
+        "written": [
+          "apps/web/src/types/reservas.ts",
+          "packages/api/modules/reservas/procedures/index.ts",
+          "apps/web/src/hooks/use-reservas.ts",
+          "apps/web/src/components/reservas/index.tsx",
+          "apps/web/src/components/reservas/pages.tsx",
+          "packages/api/modules/reservas/router.ts"
+        ],
+        "skipped": [],
+        "total": 6
+      }
+    },
+    {
+      "layer": 18,
+      "name": "Register Router",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "registered": true,
+        "alreadyExists": true
+      }
+    },
+    {
+      "layer": 19,
+      "name": "Send to MarketingOS",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "skipped": true
+      }
+    },
+    {
+      "layer": 20,
+      "name": "Generate Next.js Pages",
+      "success": true,
+      "duration": 3,
+      "output": {
+        "created": true,
+        "path": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\apps\\web\\app\\(saas)\\app\\(organizations)\\[organizationSlug]\\reservas\\page.tsx"
+      }
+    },
+    {
+      "layer": 21,
+      "name": "Add to Menu",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "added": false,
+        "reason": "already_exists"
+      }
+    },
+    {
+      "layer": 22,
+      "name": "Generate Translations",
+      "success": true,
+      "duration": 3,
+      "output": {
+        "updated": [],
+        "languages": 0
+      }
+    },
+    {
+      "layer": 23,
+      "name": "Generate Tests",
+      "success": true,
+      "duration": 2,
+      "output": {
+        "created": true,
+        "path": "auto-saas\\output\\reservas\\tests\\reservas.test.ts"
+      }
+    },
+    {
+      "layer": 24,
+      "name": "Health Check",
+      "success": true,
+      "duration": 2,
+      "output": {
+        "checks": [
+          {
+            "name": "Module Directory",
+            "status": "ok",
+            "message": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\packages\\api\\modules\\reservas"
+          },
+          {
+            "name": "CRUD Procedures",
+            "status": "ok",
+            "message": "4/4 procedures"
+          },
+          {
+            "name": "Router",
+            "status": "ok",
+            "message": "Registrado"
+          },
+          {
+            "name": "React Hooks",
+            "status": "ok",
+            "message": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\apps\\web\\src\\hooks\\use-reservas.ts"
+          },
+          {
+            "name": "TypeScript Types",
+            "status": "ok",
+            "message": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\apps\\web\\src\\types\\reservas.ts"
+          },
+          {
+            "name": "Next.js Page",
+            "status": "ok",
+            "message": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\apps\\web\\app\\(saas)\\app\\(organizations)\\[organizationSlug]\\reservas\\page.tsx"
+          },
+          {
+            "name": "SQL Migration",
+            "status": "ok",
+            "message": "auto-saas\\output\\reservas\\migration.sql"
+          }
+        ],
+        "summary": {
+          "ok": 7,
+          "warnings": 0,
+          "errors": 0
+        }
+      }
+    },
+    {
+      "layer": 25,
+      "name": "Generate Zod Schemas",
+      "success": true,
+      "duration": 4,
+      "output": {
+        "created": true,
+        "files": [
+          "auto-saas\\output\\reservas\\schemas.ts",
+          "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\apps\\web\\src\\types\\reservas-schemas.ts"
+        ]
+      }
+    },
+    {
+      "layer": 26,
+      "name": "Generate Final Report",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "created": true,
+        "path": "auto-saas\\output\\reservas\\BUILD_REPORT.md"
+      }
+    },
+    {
+      "layer": 27,
+      "name": "Generate Seeds",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "created": true,
+        "path": "auto-saas\\output\\reservas\\seeds.sql"
+      }
+    },
+    {
+      "layer": 28,
+      "name": "Generate README",
+      "success": true,
+      "duration": 2,
+      "output": {
+        "created": true,
+        "path": "auto-saas\\output\\reservas\\README.md"
+      }
+    },
+    {
+      "layer": 29,
+      "name": "Send Notification",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "notified": true,
+        "message": "🚀 Auto-SaaS Build Complete!\n📦 Module: ReservasPro (reservas)\n✅ Layers: 27/27\n⏱️ Duration: 2.38s"
+      }
+    },
+    {
+      "layer": 30,
+      "name": "Cleanup",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "cleaned": 0,
+        "verified": 2
+      }
+    },
+    {
+      "layer": 31,
+      "name": "Generate Public Page",
+      "success": true,
+      "duration": 2,
+      "output": {
+        "created": true,
+        "path": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\apps\\web\\app\\(public)\\reservas\\[slug]\\page.tsx"
+      }
+    }
+  ],
+  "success": true
+}

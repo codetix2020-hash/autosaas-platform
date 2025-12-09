@@ -1,0 +1,51 @@
+{
+  "layer": 12,
+  "timestamp": "2025-12-03T19:43:25.879Z",
+  "pages": [
+    {
+      "route": "/dashboard/contentflow",
+      "file": "page.tsx",
+      "exists": false,
+      "hasUseClient": false,
+      "importsHooks": false,
+      "importsComponents": false
+    },
+    {
+      "route": "/dashboard/contentflow (layout)",
+      "file": "layout.tsx",
+      "exists": false,
+      "hasUseClient": false,
+      "importsHooks": false,
+      "importsComponents": false
+    },
+    {
+      "route": "/dashboard/contentflow/clients/[agencyId]",
+      "file": "clients/[agencyId]/page.tsx",
+      "exists": false,
+      "hasUseClient": false,
+      "importsHooks": false,
+      "importsComponents": false
+    },
+    {
+      "route": "/dashboard/contentflow/calendar/[clientId]",
+      "file": "calendar/[clientId]/page.tsx",
+      "exists": false,
+      "hasUseClient": false,
+      "importsHooks": false,
+      "importsComponents": false
+    },
+    {
+      "route": "/dashboard/contentflow/generate",
+      "file": "generate/page.tsx",
+      "exists": false,
+      "hasUseClient": false,
+      "importsHooks": false,
+      "importsComponents": false
+    }
+  ],
+  "summary": {
+    "pagesFound": 0,
+    "pagesExpected": 5,
+    "allExist": false
+  }
+}

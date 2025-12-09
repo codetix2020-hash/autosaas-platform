@@ -1,0 +1,206 @@
+{
+  "blueprint": "invoiceflow",
+  "timestamp": "2025-12-07T23:57:22.345Z",
+  "duration": 1312,
+  "results": [
+    {
+      "layer": 1,
+      "name": "Validate Blueprint",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "valid": true,
+        "warnings": []
+      }
+    },
+    {
+      "layer": 2,
+      "name": "Analyze Feasibility",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "feasible": true,
+        "dependencies": {
+          "supabase": true,
+          "anthropic": true
+        }
+      }
+    },
+    {
+      "layer": 4,
+      "name": "Analyze Conflicts",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "conflicts": [],
+        "safe": true
+      }
+    },
+    {
+      "layer": 5,
+      "name": "Generate Plan",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "tables": 3,
+        "components": 4,
+        "routes": 5,
+        "apiRoutes": 6
+      }
+    },
+    {
+      "layer": 6,
+      "name": "Create Checkpoint",
+      "success": true,
+      "duration": 2,
+      "output": {
+        "checkpointFile": "auto-saas\\checkpoints\\invoiceflow-2025-12-07T23-57-21-034Z.json"
+      }
+    },
+    {
+      "layer": 7,
+      "name": "Generate SQL",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\invoiceflow\\migration.sql",
+        "tables": 3
+      }
+    },
+    {
+      "layer": 8,
+      "name": "Generate Types",
+      "success": true,
+      "duration": 2,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\invoiceflow\\types.ts"
+      }
+    },
+    {
+      "layer": 9,
+      "name": "Generate API",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\invoiceflow\\api-procedures.ts"
+      }
+    },
+    {
+      "layer": 10,
+      "name": "Generate Hooks",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\invoiceflow\\hooks.ts"
+      }
+    },
+    {
+      "layer": 10.5,
+      "name": "Environment Check",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "missing": [],
+        "allPresent": true
+      }
+    },
+    {
+      "layer": 11,
+      "name": "Generate Components",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\invoiceflow\\components.tsx"
+      }
+    },
+    {
+      "layer": 12,
+      "name": "Generate Pages",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "generated": true,
+        "file": "auto-saas\\output\\invoiceflow\\pages.tsx"
+      }
+    },
+    {
+      "layer": 15,
+      "name": "Apply SQL",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "applied": false,
+        "reason": "disabled"
+      }
+    },
+    {
+      "layer": 14,
+      "name": "Feature Config",
+      "success": true,
+      "duration": 1294,
+      "output": {
+        "configured": true
+      }
+    },
+    {
+      "layer": 16,
+      "name": "Final Verification",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "blueprintValid": true,
+        "sqlGenerated": true,
+        "typesGenerated": true,
+        "apiGenerated": true,
+        "hooksGenerated": true,
+        "componentsGenerated": true,
+        "pagesGenerated": true,
+        "noFatalErrors": true,
+        "allGenerated": true
+      }
+    },
+    {
+      "layer": 17,
+      "name": "Write to Project",
+      "success": true,
+      "duration": 8,
+      "output": {
+        "written": [
+          "apps/web/src/types/invoiceflow.ts",
+          "packages/api/modules/invoiceflow/procedures/index.ts",
+          "apps/web/src/hooks/use-invoiceflow.ts",
+          "apps/web/src/components/invoiceflow/index.tsx",
+          "apps/web/src/components/invoiceflow/pages.tsx",
+          "packages/api/modules/invoiceflow/router.ts"
+        ],
+        "skipped": [],
+        "total": 6
+      }
+    },
+    {
+      "layer": 18,
+      "name": "Register Router",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "registered": true,
+        "alreadyExists": true
+      }
+    },
+    {
+      "layer": 19,
+      "name": "Send to MarketingOS",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "skipped": true
+      }
+    }
+  ],
+  "success": true
+}

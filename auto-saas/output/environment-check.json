@@ -1,0 +1,117 @@
+{
+  "ok": [
+    {
+      "name": ".env.local exists",
+      "status": "ok",
+      "details": "File found"
+    },
+    {
+      "name": "NEXT_PUBLIC_SUPABASE_URL",
+      "status": "ok",
+      "details": "Configured"
+    },
+    {
+      "name": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      "status": "ok",
+      "details": "Configured"
+    },
+    {
+      "name": "SUPABASE_SERVICE_ROLE_KEY",
+      "status": "ok",
+      "details": "Configured"
+    },
+    {
+      "name": "ANTHROPIC_API_KEY",
+      "status": "ok",
+      "details": "Configured"
+    },
+    {
+      "name": "@supabase/supabase-js",
+      "status": "ok",
+      "details": "Installed: ^2.86.0"
+    },
+    {
+      "name": "@tanstack/react-query",
+      "status": "ok",
+      "details": "Installed: ^5.90.9"
+    },
+    {
+      "name": "zod",
+      "status": "ok",
+      "details": "Installed: ^4.1.12"
+    },
+    {
+      "name": "next",
+      "status": "ok",
+      "details": "Installed: 16.0.3"
+    },
+    {
+      "name": "react",
+      "status": "ok",
+      "details": "Installed: 19.2.0"
+    },
+    {
+      "name": "Types file",
+      "status": "ok",
+      "details": "apps/web/src/types/contentflow-ai.ts"
+    },
+    {
+      "name": "Hooks index",
+      "status": "ok",
+      "details": "apps/web/src/hooks/contentflow/index.ts"
+    },
+    {
+      "name": "Agencies API",
+      "status": "ok",
+      "details": "apps/web/src/app/api/contentflow/agencies/route.ts"
+    },
+    {
+      "name": "Clients API",
+      "status": "ok",
+      "details": "apps/web/src/app/api/contentflow/agency-clients/route.ts"
+    },
+    {
+      "name": "Calendar API",
+      "status": "ok",
+      "details": "apps/web/src/app/api/contentflow/content-calendar/route.ts"
+    },
+    {
+      "name": "API Client",
+      "status": "ok",
+      "details": "apps/web/src/lib/api/client.ts"
+    },
+    {
+      "name": "Auth Helper",
+      "status": "ok",
+      "details": "apps/web/src/lib/api/auth-helper.ts"
+    },
+    {
+      "name": "Supabase Client",
+      "status": "ok",
+      "details": "Properly configured"
+    },
+    {
+      "name": "TS Path Aliases",
+      "status": "ok",
+      "details": "apps/web/tsconfig.json"
+    },
+    {
+      "name": "Shadcn UI",
+      "status": "ok",
+      "details": "apps/web/components.json"
+    }
+  ],
+  "missing": [],
+  "warnings": [
+    {
+      "name": "QueryClientProvider",
+      "status": "warning",
+      "details": "May need to wrap app with QueryClientProvider",
+      "action": "Add QueryClientProvider to root layout"
+    }
+  ],
+  "requiredActions": [
+    "Consider adding QueryClientProvider to root layout for hooks to work"
+  ],
+  "canProceed": true
+}

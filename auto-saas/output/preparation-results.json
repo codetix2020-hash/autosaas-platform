@@ -1,0 +1,243 @@
+{
+  "blueprintId": "contentflow-ai",
+  "totalLayers": 6,
+  "successfulLayers": 6,
+  "failedLayers": 0,
+  "results": [
+    {
+      "layer": 1,
+      "name": "Validate Blueprint",
+      "success": true,
+      "output": {
+        "blueprint": {
+          "id": "contentflow-ai",
+          "name": "ContentFlow AI",
+          "description": "Calendario de contenido IA para micro-agencias de marketing",
+          "vpu": "El único calendario que genera 30 días de contenido multi-plataforma en 5 minutos",
+          "target_audience": "Agencias con 3-15 clientes",
+          "pricing": "€49/mes",
+          "database": {
+            "new_tables": [
+              {
+                "name": "agencies",
+                "columns": [
+                  "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+                  "user_id UUID REFERENCES user NOT NULL",
+                  "name TEXT NOT NULL",
+                  "brand_voice JSONB",
+                  "created_at TIMESTAMPTZ DEFAULT NOW()"
+                ],
+                "rls": [
+                  "CREATE POLICY \"Users manage own agencies\" ON agencies FOR ALL USING (auth.uid() = user_id)"
+                ]
+              },
+              {
+                "name": "agency_clients",
+                "columns": [
+                  "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+                  "agency_id UUID REFERENCES agencies NOT NULL",
+                  "name TEXT NOT NULL",
+                  "industry TEXT",
+                  "approval_token TEXT UNIQUE",
+                  "created_at TIMESTAMPTZ DEFAULT NOW()"
+                ]
+              },
+              {
+                "name": "content_calendar",
+                "columns": [
+                  "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+                  "client_id UUID REFERENCES agency_clients NOT NULL",
+                  "scheduled_date DATE NOT NULL",
+                  "platform TEXT NOT NULL",
+                  "content_text TEXT NOT NULL",
+                  "status TEXT DEFAULT 'draft'",
+                  "created_at TIMESTAMPTZ DEFAULT NOW()"
+                ]
+              }
+            ]
+          }
+        },
+        "errors": [],
+        "warnings": [],
+        "stats": {
+          "tables": 3,
+          "routes": 0,
+          "components": 0,
+          "apiRoutes": 0
+        }
+      },
+      "duration": 2,
+      "timestamp": "2025-11-30T11:00:20.925Z"
+    },
+    {
+      "layer": 2,
+      "name": "Analyze Feasibility",
+      "success": true,
+      "output": {
+        "feasible": true,
+        "score": 100,
+        "checks": [
+          {
+            "name": "Database Client",
+            "passed": true,
+            "details": "Prisma ORM detected"
+          },
+          {
+            "name": "Authentication System",
+            "passed": true,
+            "details": "Auth pattern detected (better-auth)"
+          },
+          {
+            "name": "Table Name Uniqueness",
+            "passed": true,
+            "details": "All table names are unique"
+          },
+          {
+            "name": "Foreign Key Validity",
+            "passed": true,
+            "details": "All foreign keys reference valid tables"
+          }
+        ],
+        "blockers": [],
+        "recommendations": []
+      },
+      "duration": 354,
+      "timestamp": "2025-11-30T11:00:21.282Z",
+      "needsHumanReview": false
+    },
+    {
+      "layer": 3,
+      "name": "Extract Context",
+      "success": true,
+      "output": "Integrated in feasibility and conflict analysis",
+      "duration": 0,
+      "timestamp": "2025-11-30T11:00:21.282Z"
+    },
+    {
+      "layer": 4,
+      "name": "Analyze Conflicts",
+      "success": true,
+      "output": {
+        "hasConflicts": false,
+        "conflicts": [],
+        "warnings": []
+      },
+      "duration": 328,
+      "timestamp": "2025-11-30T11:00:21.611Z",
+      "needsHumanReview": false
+    },
+    {
+      "layer": 5,
+      "name": "Generate Execution Plan",
+      "success": true,
+      "output": {
+        "blueprintId": "contentflow-ai",
+        "totalSteps": 8,
+        "steps": [
+          {
+            "order": 1,
+            "type": "sql",
+            "name": "Database Migration",
+            "path": "auto-saas/output/contentflow-ai/migration.sql",
+            "dependencies": [],
+            "description": "Create 3 tables: agencies, agency_clients, content_calendar"
+          },
+          {
+            "order": 2,
+            "type": "types",
+            "name": "Database Types",
+            "path": "src/types/contentflow-ai.ts",
+            "dependencies": [
+              "Database Migration"
+            ],
+            "description": "Generate TypeScript types from database schema"
+          },
+          {
+            "order": 3,
+            "type": "hook",
+            "name": "Hook: useAgencies",
+            "path": "src/hooks/contentflow-ai/useAgencies.ts",
+            "dependencies": [
+              "Database Types"
+            ],
+            "description": "CRUD operations for agencies table"
+          },
+          {
+            "order": 4,
+            "type": "hook",
+            "name": "Hook: useAgencyClients",
+            "path": "src/hooks/contentflow-ai/useAgencyClients.ts",
+            "dependencies": [
+              "Database Types"
+            ],
+            "description": "CRUD operations for agency_clients table"
+          },
+          {
+            "order": 5,
+            "type": "hook",
+            "name": "Hook: useContentCalendar",
+            "path": "src/hooks/contentflow-ai/useContentCalendar.ts",
+            "dependencies": [
+              "Database Types"
+            ],
+            "description": "CRUD operations for content_calendar table"
+          },
+          {
+            "order": 6,
+            "type": "test",
+            "name": "Unit Tests",
+            "path": "src/__tests__/contentflow-ai/",
+            "dependencies": [
+              "Hook: useAgencies",
+              "Hook: useAgencyClients",
+              "Hook: useContentCalendar"
+            ],
+            "description": "Generate unit tests for components and hooks"
+          },
+          {
+            "order": 7,
+            "type": "test",
+            "name": "Integration Tests",
+            "path": "src/__tests__/contentflow-ai/integration/",
+            "dependencies": [
+              "Unit Tests"
+            ],
+            "description": "Generate integration tests for API routes"
+          },
+          {
+            "order": 8,
+            "type": "config",
+            "name": "Feature Config",
+            "path": "src/config/contentflow-ai.ts",
+            "dependencies": [],
+            "description": "Feature flags and configuration"
+          }
+        ],
+        "estimatedDuration": 235,
+        "generatedAt": "2025-11-30T11:00:21.612Z"
+      },
+      "duration": 1,
+      "timestamp": "2025-11-30T11:00:21.613Z"
+    },
+    {
+      "layer": 6,
+      "name": "Create Checkpoint",
+      "success": true,
+      "output": {
+        "checkpointId": "contentflow-ai-layer6-2025-11-30T11-00-21-925Z",
+        "checkpointPath": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\auto-saas\\checkpoints\\contentflow-ai-layer6-2025-11-30T11-00-21-925Z.json",
+        "rollbackPath": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\auto-saas\\checkpoints\\contentflow-ai-layer6-2025-11-30T11-00-21-925Z-rollback.sh",
+        "projectState": {
+          "files": 214,
+          "components": 156,
+          "tables": 11
+        }
+      },
+      "duration": 323,
+      "timestamp": "2025-11-30T11:00:21.936Z"
+    }
+  ],
+  "totalDuration": 1014,
+  "timestamp": "2025-11-30T11:00:21.937Z",
+  "canProceed": true
+}

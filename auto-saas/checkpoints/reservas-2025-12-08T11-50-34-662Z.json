@@ -1,0 +1,172 @@
+{
+  "blueprint": {
+    "id": "reservas",
+    "name": "ReservasPro",
+    "description": "Sistema de gestión de reservas para peluquerías y salones de belleza",
+    "vpu": "Gestiona tus citas sin perder clientes. Reservas online 24/7.",
+    "target_audience": "Peluquerías, barberías y salones de belleza",
+    "pricing": "€29/mes",
+    "public_page": {
+      "enabled": true,
+      "type": "booking"
+    },
+    "database": {
+      "new_tables": [
+        {
+          "name": "services",
+          "columns": [
+            "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+            "organization_id TEXT NOT NULL",
+            "name TEXT NOT NULL",
+            "description TEXT",
+            "duration INTEGER NOT NULL DEFAULT 30",
+            "price DECIMAL(10,2) NOT NULL DEFAULT 0",
+            "is_active BOOLEAN DEFAULT true",
+            "color TEXT DEFAULT '#3B82F6'",
+            "created_at TIMESTAMPTZ DEFAULT NOW()",
+            "updated_at TIMESTAMPTZ DEFAULT NOW()"
+          ]
+        },
+        {
+          "name": "professionals",
+          "columns": [
+            "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+            "organization_id TEXT NOT NULL",
+            "name TEXT NOT NULL",
+            "email TEXT",
+            "phone TEXT",
+            "avatar_url TEXT",
+            "specialties TEXT",
+            "is_active BOOLEAN DEFAULT true",
+            "created_at TIMESTAMPTZ DEFAULT NOW()",
+            "updated_at TIMESTAMPTZ DEFAULT NOW()"
+          ]
+        },
+        {
+          "name": "working_hours",
+          "columns": [
+            "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+            "organization_id TEXT NOT NULL",
+            "professional_id UUID REFERENCES professionals(id)",
+            "day_of_week INTEGER NOT NULL CHECK (day_of_week >= 0 AND day_of_week <= 6)",
+            "start_time TIME NOT NULL DEFAULT '09:00'",
+            "end_time TIME NOT NULL DEFAULT '18:00'",
+            "is_working BOOLEAN DEFAULT true",
+            "created_at TIMESTAMPTZ DEFAULT NOW()"
+          ]
+        },
+        {
+          "name": "clients",
+          "columns": [
+            "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+            "organization_id TEXT NOT NULL",
+            "name TEXT NOT NULL",
+            "email TEXT",
+            "phone TEXT",
+            "notes TEXT",
+            "total_visits INTEGER DEFAULT 0",
+            "last_visit TIMESTAMPTZ",
+            "created_at TIMESTAMPTZ DEFAULT NOW()",
+            "updated_at TIMESTAMPTZ DEFAULT NOW()"
+          ]
+        },
+        {
+          "name": "bookings",
+          "columns": [
+            "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+            "organization_id TEXT NOT NULL",
+            "client_id UUID REFERENCES clients(id)",
+            "professional_id UUID REFERENCES professionals(id)",
+            "service_id UUID REFERENCES services(id)",
+            "client_name TEXT NOT NULL",
+            "client_email TEXT",
+            "client_phone TEXT",
+            "date DATE NOT NULL",
+            "start_time TIME NOT NULL",
+            "end_time TIME NOT NULL",
+            "status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'completed', 'cancelled', 'no_show'))",
+            "notes TEXT",
+            "price DECIMAL(10,2)",
+            "created_at TIMESTAMPTZ DEFAULT NOW()",
+            "updated_at TIMESTAMPTZ DEFAULT NOW()"
+          ]
+        }
+      ]
+    },
+    "routes": [
+      {
+        "path": "/reservas",
+        "component": "ReservasDashboard",
+        "description": "Dashboard principal de reservas"
+      },
+      {
+        "path": "/reservas/calendario",
+        "component": "ReservasCalendario",
+        "description": "Vista de calendario"
+      },
+      {
+        "path": "/reservas/servicios",
+        "component": "ServiciosPage",
+        "description": "Gestión de servicios"
+      },
+      {
+        "path": "/reservas/profesionales",
+        "component": "ProfesionalesPage",
+        "description": "Gestión de profesionales"
+      },
+      {
+        "path": "/reservas/clientes",
+        "component": "ClientesPage",
+        "description": "Gestión de clientes"
+      }
+    ]
+  },
+  "timestamp": "2025-12-08T11-50-34-662Z",
+  "results": [
+    {
+      "layer": 1,
+      "name": "Validate Blueprint",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "valid": true,
+        "warnings": []
+      }
+    },
+    {
+      "layer": 2,
+      "name": "Analyze Feasibility",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "feasible": true,
+        "dependencies": {
+          "supabase": true,
+          "anthropic": true
+        }
+      }
+    },
+    {
+      "layer": 4,
+      "name": "Analyze Conflicts",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "conflicts": [],
+        "safe": true
+      }
+    },
+    {
+      "layer": 5,
+      "name": "Generate Plan",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "tables": 5,
+        "components": 0,
+        "routes": 5,
+        "apiRoutes": 0
+      }
+    }
+  ]
+}

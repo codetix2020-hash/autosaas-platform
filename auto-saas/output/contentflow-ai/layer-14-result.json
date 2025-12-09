@@ -1,0 +1,44 @@
+{
+  "layer": 14,
+  "timestamp": "2025-12-08T12:08:07.509Z",
+  "checks": [
+    {
+      "name": "Global config file",
+      "found": true,
+      "file": "config/index.ts",
+      "details": "Has contentflow section"
+    },
+    {
+      "name": "NavBar component",
+      "found": true,
+      "file": "apps/web/modules/saas/shared/components/NavBar.tsx",
+      "details": "Has contentflow menu item"
+    },
+    {
+      "name": "Translations",
+      "found": false,
+      "details": "No i18n files found"
+    },
+    {
+      "name": "ContentFlow pages",
+      "found": false,
+      "details": "No ContentFlow pages found"
+    },
+    {
+      "name": "Route protection",
+      "found": true,
+      "file": "apps/web/app/(saas)/app/layout.tsx",
+      "details": "Auth check present"
+    }
+  ],
+  "summary": {
+    "checksFound": 3,
+    "totalChecks": 5,
+    "isVendible": false,
+    "navBarIntegrated": true,
+    "configIntegrated": true,
+    "translationsAdded": false,
+    "pagesExist": false,
+    "routesProtected": true
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "blueprint": "contentflow-ai",
+  "timestamp": "2025-12-03T19:23:25.629Z",
+  "duration": 11271,
+  "results": [
+    {
+      "layer": 1,
+      "name": "Validate Blueprint",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "valid": true,
+        "warnings": []
+      }
+    },
+    {
+      "layer": 2,
+      "name": "Analyze Feasibility",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "feasible": true,
+        "dependencies": {
+          "supabase": true,
+          "anthropic": true
+        }
+      }
+    },
+    {
+      "layer": 4,
+      "name": "Analyze Conflicts",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "conflicts": [],
+        "safe": true
+      }
+    },
+    {
+      "layer": 5,
+      "name": "Generate Plan",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "tables": 3,
+        "components": 0,
+        "routes": 0,
+        "apiRoutes": 0
+      }
+    },
+    {
+      "layer": 6,
+      "name": "Create Checkpoint",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "checkpointFile": "auto-saas\\checkpoints\\contentflow-ai-2025-12-03T19-23-14-360Z.json"
+      }
+    },
+    {
+      "layer": 7,
+      "name": "Generate SQL",
+      "success": true,
+      "duration": 4284,
+      "output": {
+        "generated": true
+      }
+    },
+    {
+      "layer": 8,
+      "name": "Generate Types",
+      "success": true,
+      "duration": 1195,
+      "output": {
+        "generated": true
+      }
+    },
+    {
+      "layer": 9,
+      "name": "Generate API",
+      "success": true,
+      "duration": 1194,
+      "output": {
+        "generated": true
+      }
+    },
+    {
+      "layer": 10,
+      "name": "Generate Hooks",
+      "success": true,
+      "duration": 1165,
+      "output": {
+        "generated": true
+      }
+    },
+    {
+      "layer": 10.5,
+      "name": "Environment Check",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "missing": [],
+        "allPresent": true
+      }
+    },
+    {
+      "layer": 11,
+      "name": "Generate Components",
+      "success": true,
+      "duration": 1180,
+      "output": {
+        "generated": true
+      }
+    },
+    {
+      "layer": 12,
+      "name": "Generate Pages",
+      "success": true,
+      "duration": 1168,
+      "output": {
+        "generated": true
+      }
+    },
+    {
+      "layer": 15,
+      "name": "Apply SQL",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "applied": false,
+        "reason": "disabled"
+      }
+    },
+    {
+      "layer": 14,
+      "name": "Feature Config",
+      "success": true,
+      "duration": 1077,
+      "output": {
+        "configured": true
+      }
+    },
+    {
+      "layer": 16,
+      "name": "Final Verification",
+      "success": true,
+      "duration": 1,
+      "output": {
+        "blueprintValid": true,
+        "sqlGenerated": true,
+        "noFatalErrors": true
+      }
+    }
+  ],
+  "success": true
+}

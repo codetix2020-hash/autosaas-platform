@@ -1,0 +1,98 @@
+{
+  "layer": 11,
+  "timestamp": "2025-12-03T19:43:24.753Z",
+  "components": [
+    {
+      "file": "ui/StatusBadge.tsx",
+      "exists": true,
+      "size": 1039,
+      "hasUseClient": true
+    },
+    {
+      "file": "ui/PlatformIcon.tsx",
+      "exists": true,
+      "size": 1143,
+      "hasUseClient": true
+    },
+    {
+      "file": "ui/LoadingSpinner.tsx",
+      "exists": true,
+      "size": 738,
+      "hasUseClient": true
+    },
+    {
+      "file": "ui/EmptyState.tsx",
+      "exists": true,
+      "size": 589,
+      "hasUseClient": true
+    },
+    {
+      "file": "agencies/AgenciesList.tsx",
+      "exists": true,
+      "size": 2958,
+      "hasUseClient": true
+    },
+    {
+      "file": "agencies/AgencyCard.tsx",
+      "exists": true,
+      "size": 2762,
+      "hasUseClient": true
+    },
+    {
+      "file": "agencies/AgencyForm.tsx",
+      "exists": true,
+      "size": 3829,
+      "hasUseClient": true
+    },
+    {
+      "file": "clients/ClientsList.tsx",
+      "exists": true,
+      "size": 3064,
+      "hasUseClient": true
+    },
+    {
+      "file": "clients/ClientForm.tsx",
+      "exists": true,
+      "size": 2964,
+      "hasUseClient": true
+    },
+    {
+      "file": "calendar/ContentCard.tsx",
+      "exists": true,
+      "size": 11574,
+      "hasUseClient": true
+    },
+    {
+      "file": "calendar/CalendarView.tsx",
+      "exists": true,
+      "size": 4204,
+      "hasUseClient": true
+    },
+    {
+      "file": "index.ts",
+      "exists": true,
+      "size": 737
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "Hooks",
+      "exists": true
+    },
+    {
+      "name": "Types",
+      "exists": true
+    },
+    {
+      "name": "Utils (cn)",
+      "exists": true
+    }
+  ],
+  "summary": {
+    "componentsFound": 11,
+    "componentsExpected": 11,
+    "allFilesExist": true,
+    "allDepsExist": true
+  },
+  "note": "Typecheck global skipped to avoid Supastarter legacy errors"
+}

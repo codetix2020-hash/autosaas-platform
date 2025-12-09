@@ -1,0 +1,217 @@
+{
+  "blueprint": {
+    "id": "invoiceflow",
+    "name": "InvoiceFlow",
+    "description": "Sistema de facturación simple para freelancers y pequeños negocios",
+    "vpu": "Crea facturas profesionales en 30 segundos",
+    "target_audience": "Freelancers, consultores, pequeñas empresas",
+    "pricing": "€19/mes",
+    "database": {
+      "new_tables": [
+        {
+          "name": "invoices",
+          "columns": [
+            "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+            "organization_id TEXT NOT NULL",
+            "client_name TEXT NOT NULL",
+            "client_email TEXT",
+            "invoice_number TEXT NOT NULL",
+            "issue_date DATE NOT NULL DEFAULT CURRENT_DATE",
+            "due_date DATE",
+            "status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'sent', 'paid', 'overdue', 'cancelled'))",
+            "subtotal DECIMAL(10,2) NOT NULL DEFAULT 0",
+            "tax_rate DECIMAL(5,2) DEFAULT 21",
+            "tax_amount DECIMAL(10,2) NOT NULL DEFAULT 0",
+            "total DECIMAL(10,2) NOT NULL DEFAULT 0",
+            "notes TEXT",
+            "created_at TIMESTAMPTZ DEFAULT NOW()",
+            "updated_at TIMESTAMPTZ DEFAULT NOW()"
+          ],
+          "rls": [
+            "CREATE POLICY \"Users manage own invoices\" ON invoices FOR ALL USING (organization_id IN (SELECT organization_id FROM members WHERE user_id = auth.uid()))"
+          ],
+          "indexes": [
+            "CREATE INDEX idx_invoices_org ON invoices(organization_id)",
+            "CREATE INDEX idx_invoices_status ON invoices(status)"
+          ]
+        },
+        {
+          "name": "invoice_items",
+          "columns": [
+            "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+            "invoice_id UUID REFERENCES invoices(id) ON DELETE CASCADE",
+            "description TEXT NOT NULL",
+            "quantity DECIMAL(10,2) NOT NULL DEFAULT 1",
+            "unit_price DECIMAL(10,2) NOT NULL",
+            "total DECIMAL(10,2) NOT NULL",
+            "created_at TIMESTAMPTZ DEFAULT NOW()"
+          ],
+          "rls": [
+            "CREATE POLICY \"Users manage own invoice items\" ON invoice_items FOR ALL USING (invoice_id IN (SELECT id FROM invoices WHERE organization_id IN (SELECT organization_id FROM members WHERE user_id = auth.uid())))"
+          ]
+        },
+        {
+          "name": "invoice_clients",
+          "columns": [
+            "id UUID PRIMARY KEY DEFAULT gen_random_uuid()",
+            "organization_id TEXT NOT NULL",
+            "name TEXT NOT NULL",
+            "email TEXT",
+            "address TEXT",
+            "tax_id TEXT",
+            "created_at TIMESTAMPTZ DEFAULT NOW()"
+          ],
+          "rls": [
+            "CREATE POLICY \"Users manage own clients\" ON invoice_clients FOR ALL USING (organization_id IN (SELECT organization_id FROM members WHERE user_id = auth.uid()))"
+          ]
+        }
+      ]
+    },
+    "routes": [
+      {
+        "path": "/invoiceflow",
+        "component": "InvoiceFlowDashboard",
+        "description": "Dashboard principal con resumen de facturas"
+      },
+      {
+        "path": "/invoiceflow/invoices",
+        "component": "InvoicesList",
+        "description": "Lista de todas las facturas"
+      },
+      {
+        "path": "/invoiceflow/invoices/new",
+        "component": "CreateInvoice",
+        "description": "Crear nueva factura"
+      },
+      {
+        "path": "/invoiceflow/invoices/[id]",
+        "component": "InvoiceDetail",
+        "description": "Ver/editar factura"
+      },
+      {
+        "path": "/invoiceflow/clients",
+        "component": "ClientsList",
+        "description": "Lista de clientes"
+      }
+    ],
+    "components": [
+      {
+        "name": "InvoiceCard",
+        "path": "components/invoiceflow/InvoiceCard.tsx",
+        "type": "client",
+        "description": "Card de factura con estado y acciones"
+      },
+      {
+        "name": "InvoiceForm",
+        "path": "components/invoiceflow/InvoiceForm.tsx",
+        "type": "client",
+        "description": "Formulario de creación/edición de factura"
+      },
+      {
+        "name": "InvoiceItemsTable",
+        "path": "components/invoiceflow/InvoiceItemsTable.tsx",
+        "type": "client",
+        "description": "Tabla editable de items de factura"
+      },
+      {
+        "name": "InvoicePDF",
+        "path": "components/invoiceflow/InvoicePDF.tsx",
+        "type": "client",
+        "description": "Generador de PDF de factura"
+      }
+    ],
+    "api_routes": [
+      {
+        "path": "/api/invoiceflow/invoices",
+        "method": "GET",
+        "description": "Listar facturas",
+        "auth_required": true
+      },
+      {
+        "path": "/api/invoiceflow/invoices",
+        "method": "POST",
+        "description": "Crear factura",
+        "auth_required": true
+      },
+      {
+        "path": "/api/invoiceflow/invoices/:id",
+        "method": "PUT",
+        "description": "Actualizar factura",
+        "auth_required": true
+      },
+      {
+        "path": "/api/invoiceflow/invoices/:id",
+        "method": "DELETE",
+        "description": "Eliminar factura",
+        "auth_required": true
+      },
+      {
+        "path": "/api/invoiceflow/invoices/:id/send",
+        "method": "POST",
+        "description": "Enviar factura por email",
+        "auth_required": true
+      },
+      {
+        "path": "/api/invoiceflow/invoices/:id/pdf",
+        "method": "GET",
+        "description": "Generar PDF de factura",
+        "auth_required": true
+      }
+    ],
+    "external_apis": [
+      {
+        "name": "Resend",
+        "purpose": "Envío de facturas por email",
+        "env_var": "RESEND_API_KEY"
+      }
+    ]
+  },
+  "timestamp": "2025-12-07T23-55-56-830Z",
+  "results": [
+    {
+      "layer": 1,
+      "name": "Validate Blueprint",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "valid": true,
+        "warnings": []
+      }
+    },
+    {
+      "layer": 2,
+      "name": "Analyze Feasibility",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "feasible": true,
+        "dependencies": {
+          "supabase": true,
+          "anthropic": true
+        }
+      }
+    },
+    {
+      "layer": 4,
+      "name": "Analyze Conflicts",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "conflicts": [],
+        "safe": true
+      }
+    },
+    {
+      "layer": 5,
+      "name": "Generate Plan",
+      "success": true,
+      "duration": 0,
+      "output": {
+        "tables": 3,
+        "components": 4,
+        "routes": 5,
+        "apiRoutes": 6
+      }
+    }
+  ]
+}

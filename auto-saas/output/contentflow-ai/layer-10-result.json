@@ -1,0 +1,44 @@
+{
+  "layer": 10,
+  "checks": [
+    {
+      "name": "useAgencies.ts",
+      "path": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\apps\\web\\src\\hooks\\contentflow\\useAgencies.ts",
+      "exists": true,
+      "exports": [
+        "useAgencies",
+        "useAgency"
+      ]
+    },
+    {
+      "name": "useAgencyClients.ts",
+      "path": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\apps\\web\\src\\hooks\\contentflow\\useAgencyClients.ts",
+      "exists": true,
+      "exports": [
+        "useAgencyClients",
+        "useAgencyClient"
+      ]
+    },
+    {
+      "name": "useContentCalendar.ts",
+      "path": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\apps\\web\\src\\hooks\\contentflow\\useContentCalendar.ts",
+      "exists": true,
+      "exports": [
+        "useContentCalendar",
+        "useCalendarView"
+      ]
+    },
+    {
+      "name": "index.ts",
+      "path": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\apps\\web\\src\\hooks\\contentflow\\index.ts",
+      "exists": true,
+      "exports": [
+        "useAgencies",
+        "useAgencyClients",
+        "useContentCalendar"
+      ]
+    }
+  ],
+  "clientExists": true,
+  "timestamp": "2025-12-03T19:43:23.606Z"
+}

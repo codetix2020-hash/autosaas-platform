@@ -1,0 +1,10 @@
+{
+  "layer": 8,
+  "timestamp": "2025-12-03T19:43:21.352Z",
+  "typesPath": "C:\\Users\\emiur\\Desktop\\supastarted\\supastarter-nextjs\\apps\\web\\src\\types\\contentflow-ai.ts",
+  "stats": {
+    "interfaces": 13,
+    "types": 8,
+    "schemas": 13
+  }
+}

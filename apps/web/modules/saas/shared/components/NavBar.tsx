@@ -7,7 +7,9 @@ import { Logo } from "@shared/components/Logo";
 import { cn } from "@ui/lib";
 import {
 	BotMessageSquareIcon,
+	CalendarDaysIcon,
 	ChevronRightIcon,
+	FileTextIcon,
 	HomeIcon,
 	SettingsIcon,
 	UserCog2Icon,
@@ -44,6 +46,30 @@ export function NavBar() {
 				: "/app/chatbot",
 			icon: BotMessageSquareIcon,
 			isActive: pathname.includes("/chatbot"),
+		},
+		{
+			label: t("app.menu.contentflow"),
+			href: `${basePath}/contentflow`,
+			icon: CalendarDaysIcon,
+			isActive: pathname.includes("/contentflow"),
+		},
+		{
+			label: t("app.menu.invoiceflow"),
+			href: `${basePath}/invoiceflow`,
+			icon: FileTextIcon,
+			isActive: pathname.includes("/invoiceflow"),
+		},
+		{
+			label: "ReservasPro",
+			href: `${basePath}/reservas`,
+			icon: FileTextIcon,
+			isActive: pathname.includes("/reservas"),
+		},
+		{
+			label: "TaskFlow",
+			href: `${basePath}/taskflow`,
+			icon: FileTextIcon,
+			isActive: pathname.includes("/taskflow"),
 		},
 		...(activeOrganization && isOrganizationAdmin
 			? [
