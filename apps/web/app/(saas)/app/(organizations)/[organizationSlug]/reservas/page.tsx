@@ -4,6 +4,7 @@ import React from "react";
 import { useBookings, useCreateBooking, useUpdateBooking, useDeleteBooking } from "@/hooks/use-reservas";
 import { orpcClient } from "@shared/lib/orpc-client";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 
 type FormData = {
@@ -37,6 +38,9 @@ const initialFormData: FormData = {
 };
 
 export default function ReservasPage() {
+  const params = useParams();
+  const orgSlug = params.organizationSlug as string;
+  
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
@@ -186,28 +190,34 @@ export default function ReservasPage() {
       {/* Sub Navigation */}
       <div className="flex gap-2 border-b pb-4">
         <Link
-          href="."
+          href={`/app/${orgSlug}/reservas`}
           className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium"
         >
           📅 Reservas
         </Link>
         <Link
-          href="servicios"
+          href={`/app/${orgSlug}/reservas/servicios`}
           className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
         >
           💇 Servicios
         </Link>
         <Link
-          href="profesionales"
+          href={`/app/${orgSlug}/reservas/profesionales`}
           className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
         >
           👩‍💼 Profesionales
         </Link>
         <Link
-          href="configuracion"
+          href={`/app/${orgSlug}/reservas/configuracion`}
           className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
         >
           ⚙️ Configuración
+        </Link>
+        <Link
+          href={`/app/${orgSlug}/reservas/fidelizacion`}
+          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
+        >
+          🏆 Fidelización
         </Link>
       </div>
 

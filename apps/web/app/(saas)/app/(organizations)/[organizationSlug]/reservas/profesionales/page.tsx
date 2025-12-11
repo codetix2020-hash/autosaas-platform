@@ -2,6 +2,7 @@
 
 import { useProfessionals, useCreateProfessional, useUpdateProfessional, useDeleteProfessional } from "@/hooks/use-reservas";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 
 type ProfessionalFormData = {
@@ -23,6 +24,9 @@ const initialFormData: ProfessionalFormData = {
 };
 
 export default function ProfesionalesPage() {
+  const params = useParams();
+  const orgSlug = params.organizationSlug as string;
+  
   const { data: response, isLoading, error } = useProfessionals();
   const professionals = response?.data || [];
   
@@ -144,28 +148,34 @@ export default function ProfesionalesPage() {
       {/* Sub Navigation */}
       <div className="flex gap-2 border-b pb-4">
         <Link
-          href="../reservas"
+          href={`/app/${orgSlug}/reservas`}
           className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
         >
           📅 Reservas
         </Link>
         <Link
-          href="servicios"
+          href={`/app/${orgSlug}/reservas/servicios`}
           className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
         >
           💇 Servicios
         </Link>
         <Link
-          href="profesionales"
+          href={`/app/${orgSlug}/reservas/profesionales`}
           className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium"
         >
           👩‍💼 Profesionales
         </Link>
         <Link
-          href="configuracion"
+          href={`/app/${orgSlug}/reservas/configuracion`}
           className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
         >
           ⚙️ Configuración
+        </Link>
+        <Link
+          href={`/app/${orgSlug}/reservas/fidelizacion`}
+          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
+        >
+          🏆 Fidelización
         </Link>
       </div>
 

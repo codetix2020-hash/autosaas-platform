@@ -10,3 +10,4 @@ export function SignupPageClient({ prefillEmail }: SignupPageClientProps) {
   return <SignupForm prefillEmail={prefillEmail} />;
 }
 
+

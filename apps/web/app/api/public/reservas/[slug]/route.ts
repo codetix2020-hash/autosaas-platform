@@ -88,6 +88,7 @@ export async function GET(
       business: businessInfo,
       services: services || [],
       professionals: professionals || [],
+      organizationId: organizationId,
     });
 
   } catch (error: any) {

@@ -2,6 +2,7 @@
 
 import { useActiveOrganization } from "@saas/organizations/hooks/use-active-organization";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type BusinessConfig = {
@@ -71,6 +72,8 @@ const dayNames = [
 ];
 
 export default function ConfiguracionPage() {
+  const params = useParams();
+  const orgSlug = params.organizationSlug as string;
   const { activeOrganization } = useActiveOrganization();
   const [config, setConfig] = useState<BusinessConfig>(defaultConfig);
   const [loading, setLoading] = useState(true);
@@ -180,17 +183,20 @@ export default function ConfiguracionPage() {
 
       {/* Sub Navigation */}
       <div className="flex gap-2 border-b pb-4">
-        <Link href="../reservas" className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">
+        <Link href={`/app/${orgSlug}/reservas`} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">
           📅 Reservas
         </Link>
-        <Link href="servicios" className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">
+        <Link href={`/app/${orgSlug}/reservas/servicios`} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">
           💇 Servicios
         </Link>
-        <Link href="profesionales" className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">
+        <Link href={`/app/${orgSlug}/reservas/profesionales`} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">
           👩‍💼 Profesionales
         </Link>
-        <Link href="configuracion" className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium">
+        <Link href={`/app/${orgSlug}/reservas/configuracion`} className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium">
           ⚙️ Configuración
+        </Link>
+        <Link href={`/app/${orgSlug}/reservas/fidelizacion`} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">
+          🏆 Fidelización
         </Link>
       </div>
 

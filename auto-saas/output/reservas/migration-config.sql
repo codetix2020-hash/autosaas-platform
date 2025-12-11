@@ -59,3 +59,4 @@ CREATE POLICY "business_config_public_read" ON business_config
     FOR SELECT
     USING (true);
 
+
