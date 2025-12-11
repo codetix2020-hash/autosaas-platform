@@ -161,16 +161,22 @@ export default function ServiciosPage() {
           👩‍💼 Profesionales
         </Link>
         <Link
-          href={`/app/${orgSlug}/reservas/configuracion`}
-          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
+          href={`/app/${orgSlug}/reservas/clientes`}
+          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors whitespace-nowrap"
         >
-          ⚙️ Configuración
+          👥 Clientes
         </Link>
         <Link
           href={`/app/${orgSlug}/reservas/fidelizacion`}
           className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
         >
           🏆 Fidelización
+        </Link>
+        <Link
+          href={`/app/${orgSlug}/reservas/configuracion`}
+          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
+        >
+          ⚙️ Configuración
         </Link>
       </div>
 

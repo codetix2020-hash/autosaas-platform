@@ -127,6 +127,33 @@ export default function ReservasPage() {
     }
   };
 
+  const handleComplete = async (bookingId: string) => {
+    if (!confirm("¿Marcar esta reserva como completada? El cliente recibirá sus puntos XP.")) return;
+
+    try {
+      const res = await fetch(`/api/reservas/${bookingId}/complete`, {
+        method: "POST",
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        let message = "✅ Reserva completada";
+        if (data.xpAwarded > 0) {
+          message += ` | +${data.xpAwarded} XP otorgados`;
+        }
+        if (data.levelUp) {
+          message += ` | 🎉 ¡Cliente subió a ${data.newLevel?.name}!`;
+        }
+        alert(message);
+        window.location.reload(); // Recargar para ver cambios
+      } else {
+        alert("Error: " + data.error);
+      }
+    } catch (err) {
+      alert("Error al completar la reserva");
+    }
+  };
+
   // Calendar helpers
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
@@ -208,16 +235,22 @@ export default function ReservasPage() {
           👩‍💼 Profesionales
         </Link>
         <Link
-          href={`/app/${orgSlug}/reservas/configuracion`}
-          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
+          href={`/app/${orgSlug}/reservas/clientes`}
+          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors whitespace-nowrap"
         >
-          ⚙️ Configuración
+          👥 Clientes
         </Link>
         <Link
           href={`/app/${orgSlug}/reservas/fidelizacion`}
           className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
         >
           🏆 Fidelización
+        </Link>
+        <Link
+          href={`/app/${orgSlug}/reservas/configuracion`}
+          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
+        >
+          ⚙️ Configuración
         </Link>
       </div>
 
@@ -348,6 +381,14 @@ export default function ReservasPage() {
                     €{item.price || 0}
                   </td>
                   <td className="px-4 py-3 text-right">
+                    {item.status !== "completed" && item.status !== "cancelled" && (
+                      <button
+                        onClick={() => handleComplete(item.id)}
+                        className="text-green-600 hover:text-green-800 text-sm font-medium mr-3"
+                      >
+                        ✓ Completar
+                      </button>
+                    )}
                     <button
                       onClick={() => handleEdit(item)}
                       className="text-blue-600 hover:text-blue-800 text-sm font-medium mr-3"

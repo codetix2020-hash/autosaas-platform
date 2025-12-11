@@ -12,29 +12,36 @@ export async function GET(
   try {
     const { slug } = await params;
     
-    // Buscar configuración por slug O por organization_id
+    // Buscar configuración del negocio - primero por slug, luego por organization_id
+    let businessConfig = null;
     let organizationId = slug;
     
-    // Primero intentar buscar por slug personalizado
+    // Intentar buscar por slug
     const { data: configBySlug } = await supabase
       .from("business_config")
       .select("*")
       .eq("slug", slug)
       .single();
     
-    let businessConfig = configBySlug;
-    
-    if (!configBySlug) {
-      // Si no hay slug, buscar por organization_id
+    if (configBySlug) {
+      businessConfig = configBySlug;
+      organizationId = configBySlug.organization_id;
+    } else {
+      // Si no encuentra por slug, buscar por organization_id
       const { data: configById } = await supabase
         .from("business_config")
         .select("*")
         .eq("organization_id", slug)
         .single();
       
-      businessConfig = configById;
-    } else {
-      organizationId = configBySlug.organization_id;
+      if (configById) {
+        businessConfig = configById;
+        organizationId = configById.organization_id;
+      }
+    }
+    
+    if (!businessConfig) {
+      return NextResponse.json({ error: "Negocio no encontrado" }, { status: 404 });
     }
 
     // Obtener servicios activos

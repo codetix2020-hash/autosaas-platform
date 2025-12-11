@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { sendBookingConfirmationEmail } from "../../../../../../lib/email/booking-emails";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -32,12 +33,42 @@ export async function POST(
       );
     }
 
-    const organizationId = slug;
+    // Buscar configuración del negocio - primero por slug, luego por organization_id
+    let businessConfig = null;
+    let organizationId = slug;
+    
+    // Intentar buscar por slug
+    const { data: configBySlug } = await supabase
+      .from("business_config")
+      .select("*")
+      .eq("slug", slug)
+      .single();
+    
+    if (configBySlug) {
+      businessConfig = configBySlug;
+      organizationId = configBySlug.organization_id;
+    } else {
+      // Si no encuentra por slug, buscar por organization_id
+      const { data: configById } = await supabase
+        .from("business_config")
+        .select("*")
+        .eq("organization_id", slug)
+        .single();
+      
+      if (configById) {
+        businessConfig = configById;
+        organizationId = configById.organization_id;
+      }
+    }
+    
+    if (!businessConfig) {
+      return NextResponse.json({ error: "Negocio no encontrado" }, { status: 404 });
+    }
 
-    // Obtener duración del servicio para calcular end_time
+    // Obtener servicio completo (necesitamos name también)
     const { data: service, error: serviceError } = await supabase
       .from("services")
-      .select("duration, price")
+      .select("id, name, duration, price")
       .eq("id", service_id)
       .single();
 
@@ -133,7 +164,38 @@ export async function POST(
       return NextResponse.json({ error: "Error al crear la reserva" }, { status: 500 });
     }
 
-    // TODO: Enviar email de confirmación
+    // Obtener información del profesional si existe
+    let professional = null;
+    if (professional_id) {
+      const { data: profData } = await supabase
+        .from("professionals")
+        .select("name")
+        .eq("id", professional_id)
+        .single();
+      if (profData) {
+        professional = profData;
+      }
+    }
+
+    // Enviar email de confirmación
+    try {
+      console.log('📧 Intentando enviar email a:', client_email);
+      const emailResult = await sendBookingConfirmationEmail({
+        clientName: client_name,
+        clientEmail: client_email,
+        serviceName: service?.name || 'Servicio',
+        professionalName: professional?.name || null,
+        date: date,
+        time: start_time,
+        price: service?.price || 0,
+        businessName: businessConfig?.business_name || 'Barbería',
+        businessPhone: businessConfig?.phone || undefined,
+        businessAddress: businessConfig?.address ? `${businessConfig.address}${businessConfig.city ? `, ${businessConfig.city}` : ''}` : undefined,
+      });
+      console.log('📧 Resultado del email:', emailResult);
+    } catch (emailError) {
+      console.error('❌ Error enviando email:', emailError);
+    }
 
     return NextResponse.json({
       success: true,

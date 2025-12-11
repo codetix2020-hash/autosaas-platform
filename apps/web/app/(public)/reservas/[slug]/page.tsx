@@ -235,7 +235,7 @@ export default function PublicBookingPage() {
                 <h1 className="text-xl font-bold tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
                   {business?.name || "Salón"}
                 </h1>
-                <p className="text-xs text-gray-400 tracking-wider uppercase">Beauty & Style</p>
+                <p className="text-xs text-gray-400 tracking-wider uppercase">BARBERÍA</p>
               </div>
             </div>
             

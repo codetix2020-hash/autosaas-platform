@@ -166,6 +166,12 @@ export default function ProfesionalesPage() {
           👩‍💼 Profesionales
         </Link>
         <Link
+          href={`/app/${orgSlug}/reservas/clientes`}
+          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors whitespace-nowrap"
+        >
+          👥 Clientes
+        </Link>
+        <Link
           href={`/app/${orgSlug}/reservas/configuracion`}
           className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors"
         >
