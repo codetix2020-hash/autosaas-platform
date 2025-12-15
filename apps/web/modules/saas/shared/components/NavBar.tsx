@@ -7,6 +7,7 @@ import { Logo } from "@shared/components/Logo";
 import { cn } from "@ui/lib";
 import {
 	BotMessageSquareIcon,
+	Building2Icon,
 	CalendarDaysIcon,
 	ChevronRightIcon,
 	FileTextIcon,
@@ -70,6 +71,12 @@ export function NavBar() {
 			href: `${basePath}/taskflow`,
 			icon: FileTextIcon,
 			isActive: pathname.includes("/taskflow"),
+		},
+		{
+			label: "Mis Peluquerías",
+			href: "/app/peluquerias",
+			icon: Building2Icon,
+			isActive: pathname.includes("/peluquerias"),
 		},
 		...(activeOrganization && isOrganizationAdmin
 			? [
