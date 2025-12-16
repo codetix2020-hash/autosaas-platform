@@ -40,11 +40,11 @@
 		]
 	},
 	"dependencies": {
-		"@anthropic-ai/sdk": "^0.71.0",
-		"@supabase/supabase-js": "^2.86.0",
+		"@anthropic-ai/sdk": "^0.71.2",
+		"@supabase/supabase-js": "^2.88.0",
 		"bcryptjs": "^3.0.3",
 		"clsx": "^2.1.1",
-		"openai": "^6.9.0",
+		"openai": "^6.13.0",
 		"tailwind-merge": "^3.4.0"
 	}
 }
