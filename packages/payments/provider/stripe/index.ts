@@ -34,6 +34,24 @@ export function getStripeClient() {
 }
 
 export const createCheckoutLink: CreateCheckoutLink = async (options) => {
+	console.log("💳 [Stripe createCheckoutLink] Iniciando creación de checkout");
+	console.log("💳 [Stripe createCheckoutLink] Options:", {
+		type: options.type,
+		productId: options.productId,
+		redirectUrl: options.redirectUrl,
+		hasCustomerId: !!options.customerId,
+		organizationId: options.organizationId,
+		userId: options.userId,
+		trialPeriodDays: options.trialPeriodDays,
+		seats: options.seats,
+		email: options.email,
+	});
+
+	if (!options.productId || options.productId === "undefined" || options.productId === "null") {
+		console.error("❌ [Stripe createCheckoutLink] productId inválido:", options.productId);
+		throw new Error("Invalid productId");
+	}
+
 	const stripeClient = getStripeClient();
 	const {
 		type,
@@ -52,33 +70,53 @@ export const createCheckoutLink: CreateCheckoutLink = async (options) => {
 		user_id: userId || null,
 	};
 
-	const response = await stripeClient.checkout.sessions.create({
+	console.log("💳 [Stripe createCheckoutLink] Creando sesión de checkout con:", {
 		mode: type === "subscription" ? "subscription" : "payment",
-		success_url: redirectUrl ?? "",
-		line_items: [
-			{
-				quantity: seats ?? 1,
-				price: productId,
-			},
-		],
-		...(customerId ? { customer: customerId } : { customer_email: email }),
-		...(type === "one-time"
-			? {
-					payment_intent_data: {
-						metadata,
-					},
-					customer_creation: "always",
-				}
-			: {
-					subscription_data: {
-						metadata,
-						trial_period_days: trialPeriodDays,
-					},
-				}),
-		metadata,
+		productId,
+		hasCustomerId: !!customerId,
+		email: customerId ? undefined : email,
 	});
 
-	return response.url;
+	try {
+		const response = await stripeClient.checkout.sessions.create({
+			mode: type === "subscription" ? "subscription" : "payment",
+			success_url: redirectUrl ?? "",
+			line_items: [
+				{
+					quantity: seats ?? 1,
+					price: productId,
+				},
+			],
+			...(customerId ? { customer: customerId } : { customer_email: email }),
+			...(type === "one-time"
+				? {
+						payment_intent_data: {
+							metadata,
+						},
+						customer_creation: "always",
+					}
+				: {
+						subscription_data: {
+							metadata,
+							trial_period_days: trialPeriodDays,
+						},
+					}),
+			metadata,
+		});
+
+		console.log("✅ [Stripe createCheckoutLink] Checkout session creada:", response.id);
+		console.log("✅ [Stripe createCheckoutLink] URL:", response.url?.substring(0, 50) + "...");
+
+		return response.url;
+	} catch (error: any) {
+		console.error("❌ [Stripe createCheckoutLink] Error de Stripe:", {
+			message: error.message,
+			type: error.type,
+			code: error.code,
+			declineCode: error.decline_code,
+		});
+		throw error;
+	}
 };
 
 export const createCustomerPortalLink: CreateCustomerPortalLink = async ({

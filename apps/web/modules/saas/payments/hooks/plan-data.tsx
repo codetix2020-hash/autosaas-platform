@@ -23,6 +23,16 @@ export function usePlanData() {
 				t("pricing.products.free.features.limitedSupport"),
 			],
 		},
+		basico: {
+			title: "Básico",
+			description: "Ideal para empezar. Hasta 100 reservas por mes.",
+			features: [
+				"Hasta 100 reservas/mes",
+				"1 profesional",
+				"Soporte email",
+				"Sistema de fidelización",
+			],
+		},
 		pro: {
 			title: t("pricing.products.pro.title"),
 			description: t("pricing.products.pro.description"),
@@ -45,6 +55,16 @@ export function usePlanData() {
 			features: [
 				t("pricing.products.lifetime.features.noRecurringCosts"),
 				t("pricing.products.lifetime.features.extendSupport"),
+			],
+		},
+		promo: {
+			title: "Promo Lanzamiento",
+			description: "Oferta especial de lanzamiento. ¡Solo por tiempo limitado!",
+			features: [
+				"Acceso completo a todas las funciones",
+				"Pago único de lanzamiento",
+				"Soporte prioritario",
+				"Actualizaciones de por vida",
 			],
 		},
 	};

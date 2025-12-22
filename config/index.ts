@@ -1,5 +1,13 @@
 import type { Config } from "./types";
 
+console.log("🔧 [Config] Variables de entorno de Stripe:", {
+	BASICO: process.env.NEXT_PUBLIC_PRICE_ID_BASICO_MONTHLY,
+	PRO: process.env.NEXT_PUBLIC_PRICE_ID_PRO_MONTHLY,
+	LIFETIME: process.env.NEXT_PUBLIC_PRICE_ID_LIFETIME,
+	PROMO: process.env.NEXT_PUBLIC_PRICE_ID_PROMO_LANZAMIENTO,
+	STRIPE_SECRET: process.env.STRIPE_SECRET_KEY ? "✅ Presente" : "❌ Falta",
+});
+
 export const config = {
 	appName: "supastarter for Next.js Demo",
 	// Internationalization
@@ -10,18 +18,18 @@ export const config = {
 		// You need to define a label that is shown in the language selector and a currency that should be used for pricing with this locale
 		locales: {
 			en: {
-				currency: "USD",
+				currency: "EUR",
 				label: "English",
 			},
 			de: {
-				currency: "USD",
+				currency: "EUR",
 				label: "Deutsch",
 			},
 		},
 		// The default locale is used if no locale is provided
 		defaultLocale: "en",
 		// The default currency is used for pricing if no currency is provided
-		defaultCurrency: "USD",
+		defaultCurrency: "EUR",
 		// The name of the cookie that is used to determine the locale
 		localeCookieName: "NEXT_LOCALE",
 	},
@@ -30,7 +38,7 @@ export const config = {
 		// Whether organizations are enabled in general
 		enable: true,
 		// Whether billing for organizations should be enabled (below you can enable it for users instead)
-		enableBilling: false,
+		enableBilling: true,
 		// Whether the organization should be hidden from the user (use this for multi-tenant applications)
 		hideOrganization: false,
 		// Should users be able to create new organizations? Otherwise only admin users can create them
@@ -49,7 +57,7 @@ export const config = {
 	// Users
 	users: {
 		// Whether billing should be enabled for users (above you can enable it for organizations instead)
-		enableBilling: true,
+		enableBilling: false,
 		// Whether you want the user to go through an onboarding form after signup (can be defined in the OnboardingForm.tsx)
 		enableOnboarding: true,
 	},
@@ -128,34 +136,38 @@ export const config = {
 	},
 	// Payments
 	payments: {
-		// define the products that should be available in the checkout
 		plans: {
-			// The free plan is treated differently. It will automatically be assigned if the user has no other plan.
 			free: {
 				isFree: true,
+			},
+			basico: {
+				prices: [
+					{
+						type: "recurring",
+						productId: (() => {
+							const priceId = process.env.NEXT_PUBLIC_PRICE_ID_BASICO_MONTHLY;
+							console.log("🔍 [Config] NEXT_PUBLIC_PRICE_ID_BASICO_MONTHLY:", priceId);
+							return priceId as string;
+						})(),
+						interval: "month",
+						amount: 19,
+						currency: "EUR",
+					},
+				],
 			},
 			pro: {
 				recommended: true,
 				prices: [
 					{
 						type: "recurring",
-						productId: process.env
-							.NEXT_PUBLIC_PRICE_ID_PRO_MONTHLY as string,
+						productId: (() => {
+							const priceId = process.env.NEXT_PUBLIC_PRICE_ID_PRO_MONTHLY;
+							console.log("🔍 [Config] NEXT_PUBLIC_PRICE_ID_PRO_MONTHLY:", priceId);
+							return priceId as string;
+						})(),
 						interval: "month",
-						amount: 29,
-						currency: "USD",
-						seatBased: true,
-						trialPeriodDays: 7,
-					},
-					{
-						type: "recurring",
-						productId: process.env
-							.NEXT_PUBLIC_PRICE_ID_PRO_YEARLY as string,
-						interval: "year",
-						amount: 290,
-						currency: "USD",
-						seatBased: true,
-						trialPeriodDays: 7,
+						amount: 39,
+						currency: "EUR",
 					},
 				],
 			},
@@ -163,15 +175,21 @@ export const config = {
 				prices: [
 					{
 						type: "one-time",
-						productId: process.env
-							.NEXT_PUBLIC_PRICE_ID_LIFETIME as string,
-						amount: 799,
-						currency: "USD",
+						productId: process.env.NEXT_PUBLIC_PRICE_ID_LIFETIME as string,
+						amount: 19,
+						currency: "EUR",
 					},
 				],
 			},
-			enterprise: {
-				isEnterprise: true,
+			promo: {
+				prices: [
+					{
+						type: "one-time",
+						productId: process.env.NEXT_PUBLIC_PRICE_ID_PROMO_LANZAMIENTO as string,
+						amount: 1,
+						currency: "EUR",
+					},
+				],
 			},
 		},
 	},

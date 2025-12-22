@@ -33,6 +33,20 @@ export const createCheckoutLink = protectedProcedure
 			input: { productId, redirectUrl, type, organizationId },
 			context: { user },
 		}) => {
+			console.log("🔍 [createCheckoutLink] Input recibido:", {
+				productId,
+				type,
+				organizationId,
+				redirectUrl,
+				userId: user.id,
+				userEmail: user.email,
+			});
+
+			if (!productId || productId === "undefined" || productId === "null") {
+				console.error("❌ [createCheckoutLink] productId inválido:", productId);
+				throw new ORPCError("BAD_REQUEST", "Invalid productId");
+			}
+
 			const customerId = await getCustomerIdFromEntity(
 				organizationId
 					? {
@@ -43,14 +57,44 @@ export const createCheckoutLink = protectedProcedure
 						},
 			);
 
+			console.log("👤 [createCheckoutLink] customerId:", customerId);
+
 			const plans = config.payments.plans as Config["payments"]["plans"];
+
+			console.log("📦 [createCheckoutLink] Buscando plan con productId:", productId);
+			console.log("📦 [createCheckoutLink] Planes disponibles:", Object.keys(plans));
 
 			const plan = Object.entries(plans).find(([_planId, plan]) =>
 				plan.prices?.find((price) => price.productId === productId),
 			);
+
+			if (!plan) {
+				console.error("❌ [createCheckoutLink] No se encontró plan con productId:", productId);
+				console.log("📋 [createCheckoutLink] Precios de todos los planes:", 
+					Object.entries(plans).map(([planId, plan]) => ({
+						planId,
+						prices: plan.prices?.map(p => ({ productId: p.productId, type: p.type, interval: "interval" in p ? p.interval : undefined }))
+					}))
+				);
+				throw new ORPCError("NOT_FOUND", "Plan not found for productId");
+			}
+
+			console.log("✅ [createCheckoutLink] Plan encontrado:", plan[0]);
+
 			const price = plan?.[1].prices?.find(
 				(price) => price.productId === productId,
 			);
+
+			if (!price) {
+				console.error("❌ [createCheckoutLink] No se encontró price dentro del plan");
+				throw new ORPCError("NOT_FOUND", "Price not found");
+			}
+
+			console.log("✅ [createCheckoutLink] Price encontrado:", {
+				productId: price.productId,
+				type: price.type,
+				interval: "interval" in price ? price.interval : undefined,
+			});
 			const trialPeriodDays =
 				price && "trialPeriodDays" in price
 					? price.trialPeriodDays
@@ -70,6 +114,17 @@ export const createCheckoutLink = protectedProcedure
 					: undefined;
 
 			try {
+				console.log("🚀 [createCheckoutLink] Creando checkout link con:", {
+					type,
+					productId,
+					email: user.email,
+					organizationId,
+					userId: organizationId ? undefined : user.id,
+					trialPeriodDays,
+					seats,
+					customerId: customerId ?? undefined,
+				});
+
 				const checkoutLink = await createCheckoutLinkFn({
 					type,
 					productId,
@@ -84,12 +139,16 @@ export const createCheckoutLink = protectedProcedure
 					customerId: customerId ?? undefined,
 				});
 
+				console.log("✅ [createCheckoutLink] Checkout link creado:", checkoutLink?.substring(0, 50) + "...");
+
 				if (!checkoutLink) {
+					console.error("❌ [createCheckoutLink] Checkout link es null/undefined");
 					throw new ORPCError("INTERNAL_SERVER_ERROR");
 				}
 
 				return { checkoutLink };
 			} catch (e) {
+				console.error("❌ [createCheckoutLink] Error al crear checkout link:", e);
 				logger.error(e);
 				throw new ORPCError("INTERNAL_SERVER_ERROR");
 			}
