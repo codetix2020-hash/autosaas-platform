@@ -59,21 +59,27 @@ export default function ServiceCard({
       
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <p className="font-medium text-white truncate">{name}</p>
-        <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-xs text-gray-500">{duration} min</span>
+        <p className="font-semibold text-white truncate text-base">{name}</p>
+        <div className="flex items-center gap-3 mt-1.5">
+          <div className="flex items-center gap-1">
+            <span className="text-xs text-gray-400">⏱</span>
+            <span className="text-xs text-gray-400">{duration} min</span>
+          </div>
           {xpValue && (
             <>
               <span className="text-gray-600">•</span>
-              <span className="text-xs" style={{ color: accentColor }}>+{xpValue} XP</span>
+              <span className="text-xs font-medium" style={{ color: accentColor }}>+{xpValue} XP</span>
             </>
           )}
         </div>
+        {description && (
+          <p className="text-xs text-gray-500 mt-1 line-clamp-1">{description}</p>
+        )}
       </div>
       
       {/* Price */}
       <div className="text-right flex-shrink-0">
-        <p className="text-lg font-bold" style={{ color: accentColor }}>
+        <p className="text-2xl font-bold" style={{ color: accentColor }}>
           {price}€
         </p>
       </div>

@@ -257,8 +257,8 @@ export default function PublicBookingPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Elegant Header */}
-      <header className="relative z-10">
+        {/* Elegant Header */}
+        <header className="relative z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-transparent h-32" />
         <div className="relative px-6 pt-8 pb-4">
           <div className="flex items-center justify-between">
@@ -308,92 +308,131 @@ export default function PublicBookingPage() {
         {/* HOME TAB */}
         {activeTab === "home" && (
           <div className="space-y-8">
-            {/* Hero Section */}
-            <div className="relative h-72 overflow-hidden">
-              {/* Background with overlay for consistency */}
+            {/* Hero Section - Mejorado */}
+            <div className="relative h-[500px] overflow-hidden">
+              {/* Background */}
               <div 
                 className="absolute inset-0 bg-cover bg-center"
                 style={{ 
                   backgroundImage: `url('${heroImages.main}')`,
-                  filter: "brightness(0.7) saturate(0.9)",
+                  filter: "brightness(0.5) saturate(0.8)",
                 }}
               />
+              {/* Overlay más oscuro para mejor legibilidad */}
               <div 
                 className="absolute inset-0"
                 style={{ 
-                  background: "linear-gradient(to top, rgba(5,5,7,1) 0%, rgba(5,5,7,0.6) 50%, rgba(5,5,7,0.4) 100%)" 
+                  background: "linear-gradient(to top, rgba(5,5,7,0.95) 0%, rgba(5,5,7,0.8) 50%, rgba(5,5,7,0.6) 100%)" 
                 }}
               />
               
-              {/* Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h2 
-                  className="text-3xl font-bold mb-2 leading-tight"
+              {/* Content - Centrado y más grande */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+                {business?.logo && (
+                  <img 
+                    src={business.logo} 
+                    alt={business?.name} 
+                    className="w-24 h-24 rounded-full object-cover border-4 mb-6 transition-opacity duration-500"
+                    style={{ borderColor: accentColor }}
+                  />
+                )}
+                <h1 
+                  className="text-5xl md:text-6xl font-bold mb-4 leading-tight transition-opacity duration-500"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
-                  Tu estilo,<br />nuestra pasión
-                </h2>
-                <p className="text-gray-400 text-sm mb-4">
-                  Reserva tu cita y transforma tu look
+                  {business?.name || "Salón"}
+                </h1>
+                <p className="text-xl text-gray-300 mb-8 max-w-md transition-opacity duration-500">
+                  {business?.description || "Tu estilo, nuestra pasión"}
                 </p>
                 <button
                   onClick={() => setActiveTab("booking")}
-                  className="px-6 py-3 rounded-full font-semibold text-black transition-all hover:brightness-110 hover:scale-[1.02] shadow-lg"
+                  className="px-10 py-4 rounded-full font-bold text-lg text-black transition-all hover:scale-105 relative group"
                   style={{ 
                     backgroundColor: accentColor,
                     boxShadow: `0 4px 20px ${accentColor}40`,
                   }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = `0 8px 40px ${accentColor}80, 0 0 60px ${accentColor}40`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = `0 4px 20px ${accentColor}40`;
+                  }}
                 >
-                  Reservar Ahora
+                  <span className="relative z-10">Reservar Ahora</span>
+                  {/* Glow effect */}
+                  <div 
+                    className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300"
+                    style={{ backgroundColor: accentColor }}
+                  />
                 </button>
               </div>
             </div>
 
-            {/* Quick Stats for logged in users */}
+            {/* XP Bar mejorada para usuarios logueados */}
             {client && (
               <div className="px-6">
                 <div 
-                  className="rounded-2xl p-4 backdrop-blur-lg"
+                  className="rounded-2xl p-5 backdrop-blur-lg border border-white/10"
                   style={{ backgroundColor: "rgba(255,255,255,0.05)" }}
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-4">
+                      {/* Icono de nivel más grande con brillo */}
                       <div 
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-lg"
-                        style={{ backgroundColor: levelInfo?.current?.color || accentColor }}
+                        className="w-16 h-16 rounded-full flex items-center justify-center text-2xl relative"
+                        style={{ 
+                          backgroundColor: levelInfo?.current?.color || accentColor,
+                          boxShadow: `0 0 30px ${(levelInfo?.current?.color || accentColor)}50`,
+                        }}
                       >
-                        {levelInfo?.current?.icon || "⭐"}
+                        <span className="relative z-10">{levelInfo?.current?.icon || "⭐"}</span>
                       </div>
-                    <div>
-                        <div className="font-medium">{client.name}</div>
-                        <div className="text-xs text-gray-400">{levelInfo?.current?.name || "Nivel 1"}</div>
+                      <div>
+                        <div className="font-semibold text-lg">{client.name}</div>
+                        <div 
+                          className="text-sm font-medium"
+                          style={{ color: levelInfo?.current?.color || accentColor }}
+                        >
+                          {levelInfo?.current?.name || "Nivel 1"}
+                        </div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-xl font-bold" style={{ color: accentColor }}>{client.total_xp}</div>
-                      <div className="text-xs text-gray-400">XP Total</div>
+                      <div className="text-2xl font-bold" style={{ color: accentColor }}>{client.total_xp}</div>
+                      <div className="text-xs text-gray-400 uppercase tracking-wider">XP Total</div>
                     </div>
                   </div>
                   {levelInfo?.next && (
                     <div>
-                      <div className="flex justify-between text-xs text-gray-400 mb-1">
-                        <span>Próximo nivel: {levelInfo.next.name}</span>
-                        <span>{levelInfo.xpToNextLevel} XP restantes</span>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="text-gray-300 font-medium">
+                          Próximo: <span style={{ color: levelInfo.next.color || accentColor }}>{levelInfo.next.name}</span>
+                        </span>
+                        <span className="font-semibold" style={{ color: accentColor }}>
+                          {levelInfo.xpToNextLevel} XP
+                        </span>
                       </div>
-                      <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                      <div className="h-3 bg-white/10 rounded-full overflow-hidden">
                         <div 
-                          className="h-full rounded-full transition-all"
+                          className="h-full rounded-full transition-all duration-500 relative"
                           style={{ 
                             width: `${Math.min(((client.total_xp - (levelInfo.current?.min_xp || 0)) / ((levelInfo.next?.min_xp || 1) - (levelInfo.current?.min_xp || 0))) * 100, 100)}%`,
-                            backgroundColor: accentColor 
+                            backgroundColor: levelInfo.next.color || accentColor,
+                            boxShadow: `0 0 10px ${(levelInfo.next.color || accentColor)}50`,
                           }}
                         />
                       </div>
+                      {levelInfo.next.reward_description && (
+                        <p className="text-xs text-gray-400 mt-2 text-center">
+                          🎁 {levelInfo.next.reward_description}
+                        </p>
+                      )}
                     </div>
                   )}
-            </div>
-          </div>
-        )}
+                </div>
+              </div>
+            )}
 
             {/* Trending Styles */}
             {styles.length > 0 && (
@@ -412,13 +451,14 @@ export default function PublicBookingPage() {
                     Ver todo →
                   </span>
                 </div>
-                <div className="flex gap-3 overflow-x-auto pb-4 -mx-6 px-6 scrollbar-hide">
+                <div className="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6 scrollbar-hide">
                   {styles.map((trend) => (
                     <TrendCard
                       key={trend.id}
                       name={trend.name}
                       category={trend.category}
                       image={trend.image}
+                      price={trend.basePrice}
                       accentColor={accentColor}
                       onClick={() => {
                         setSelectedTrend(trend);
@@ -429,6 +469,69 @@ export default function PublicBookingPage() {
                 </div>
               </div>
             )}
+
+            {/* Sección "¿Por qué elegirnos?" */}
+            <div className="px-6">
+              <h3 
+                className="text-xl font-bold mb-6 text-center"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                ¿Por qué elegirnos?
+              </h3>
+              <div className="grid grid-cols-1 gap-4">
+                <div 
+                  className="rounded-2xl p-5 border border-white/10"
+                  style={{ backgroundColor: "rgba(255,255,255,0.03)" }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div 
+                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                      style={{ backgroundColor: `${accentColor}20` }}
+                    >
+                      ⚡
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-lg mb-1">Reserva en 30 segundos</h4>
+                      <p className="text-sm text-gray-400">Proceso rápido y sencillo. Elige servicio, fecha y hora en un clic.</p>
+                    </div>
+                  </div>
+                </div>
+                <div 
+                  className="rounded-2xl p-5 border border-white/10"
+                  style={{ backgroundColor: "rgba(255,255,255,0.03)" }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div 
+                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                      style={{ backgroundColor: `${accentColor}20` }}
+                    >
+                      🏆
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-lg mb-1">Acumula puntos y gana premios</h4>
+                      <p className="text-sm text-gray-400">Sistema de fidelización con XP. Desbloquea descuentos y servicios gratis.</p>
+                    </div>
+                  </div>
+                </div>
+                <div 
+                  className="rounded-2xl p-5 border border-white/10"
+                  style={{ backgroundColor: "rgba(255,255,255,0.03)" }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div 
+                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                      style={{ backgroundColor: `${accentColor}20` }}
+                    >
+                      📅
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-lg mb-1">Recordatorio automático 24h antes</h4>
+                      <p className="text-sm text-gray-400">Nunca olvides tu cita. Recibe un recordatorio por email 24 horas antes.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* Services Preview */}
             <div className="px-6">
