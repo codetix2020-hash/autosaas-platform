@@ -1,13 +1,5 @@
 import type { Config } from "./types";
 
-console.log("🔧 [Config] Variables de entorno de Stripe:", {
-	BASICO: process.env.NEXT_PUBLIC_PRICE_ID_BASICO_MONTHLY,
-	PRO: process.env.NEXT_PUBLIC_PRICE_ID_PRO_MONTHLY,
-	LIFETIME: process.env.NEXT_PUBLIC_PRICE_ID_LIFETIME,
-	PROMO: process.env.NEXT_PUBLIC_PRICE_ID_PROMO_LANZAMIENTO,
-	STRIPE_SECRET: process.env.STRIPE_SECRET_KEY ? "✅ Presente" : "❌ Falta",
-});
-
 export const config = {
 	appName: "supastarter for Next.js Demo",
 	// Internationalization
@@ -144,11 +136,7 @@ export const config = {
 				prices: [
 					{
 						type: "recurring",
-						productId: (() => {
-							const priceId = process.env.NEXT_PUBLIC_PRICE_ID_BASICO_MONTHLY;
-							console.log("🔍 [Config] NEXT_PUBLIC_PRICE_ID_BASICO_MONTHLY:", priceId);
-							return priceId as string;
-						})(),
+						productId: process.env.NEXT_PUBLIC_PRICE_ID_BASICO_MONTHLY as string,
 						interval: "month",
 						amount: 19,
 						currency: "EUR",
@@ -160,11 +148,7 @@ export const config = {
 				prices: [
 					{
 						type: "recurring",
-						productId: (() => {
-							const priceId = process.env.NEXT_PUBLIC_PRICE_ID_PRO_MONTHLY;
-							console.log("🔍 [Config] NEXT_PUBLIC_PRICE_ID_PRO_MONTHLY:", priceId);
-							return priceId as string;
-						})(),
+						productId: process.env.NEXT_PUBLIC_PRICE_ID_PRO_MONTHLY as string,
 						interval: "month",
 						amount: 39,
 						currency: "EUR",
