@@ -12,6 +12,7 @@ import {
 	ChevronRightIcon,
 	FileTextIcon,
 	HomeIcon,
+	ScissorsIcon,
 	SettingsIcon,
 	UserCog2Icon,
 	UserCogIcon,
@@ -65,6 +66,12 @@ export function NavBar() {
 			href: `${basePath}/reservas`,
 			icon: FileTextIcon,
 			isActive: pathname.includes("/reservas"),
+		},
+		{
+			label: "Galería de Estilos",
+			href: `${basePath}/galeria`,
+			icon: ScissorsIcon,
+			isActive: pathname.includes("/galeria"),
 		},
 		{
 			label: "TaskFlow",

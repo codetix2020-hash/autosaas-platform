@@ -6,7 +6,7 @@ import AuthModal from "./components/AuthModal";
 import TrendCard from "./components/TrendCard";
 import ServiceCard from "./components/ServiceCard";
 import TrendModal from "./components/TrendModal";
-import { defaultTheme, maleTrends, heroImages, TrendStyle } from "./theme";
+import { defaultTheme, heroImages, TrendStyle } from "./theme";
 
 type BusinessConfig = {
   name: string;
@@ -38,8 +38,18 @@ type Professional = {
   avatar_url?: string;
 };
 
-// Usar tendencias masculinas
-const trendingStyles = maleTrends;
+type StyleFromAPI = {
+  id: string;
+  name: string;
+  category: string;
+  description: string | null;
+  duration_minutes: number | null;
+  base_price: number | null;
+  image_url: string;
+  recommended_for: string[] | null;
+  is_active: boolean;
+  display_order: number;
+};
 
 export default function PublicBookingPage() {
   const params = useParams();
@@ -55,6 +65,7 @@ export default function PublicBookingPage() {
   const [organizationId, setOrganizationId] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [styles, setStyles] = useState<TrendStyle[]>([]);
 
   // Auth
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -87,6 +98,7 @@ export default function PublicBookingPage() {
   useEffect(() => {
     async function loadData() {
       try {
+        // Load business config
         const res = await fetch(`/api/public/reservas/${slug}`);
         if (!res.ok) throw new Error("Negocio no encontrado");
         const data = await res.json();
@@ -94,6 +106,36 @@ export default function PublicBookingPage() {
         setServices(data.services || []);
         setProfessionals(data.professionals || []);
         setOrganizationId(data.organizationId || slug);
+
+        // Load styles from gallery
+        try {
+          const stylesRes = await fetch(`/api/public/styles/${slug}`);
+          if (stylesRes.ok) {
+            const stylesData = await stylesRes.json();
+            const stylesFromAPI: StyleFromAPI[] = stylesData.styles || [];
+            
+            // Transform API data to TrendStyle format
+            const transformedStyles: TrendStyle[] = stylesFromAPI.map((style) => ({
+              id: style.id,
+              name: style.name,
+              category: style.category,
+              durationMinutes: style.duration_minutes || 30,
+              basePrice: style.base_price || 0,
+              image: style.image_url,
+              shortDescription: style.description 
+                ? (style.description.length > 100 ? style.description.substring(0, 100) + "..." : style.description)
+                : "",
+              fullDescription: style.description || "",
+              recommendedFor: style.recommended_for?.join(", ") || "",
+            }));
+            
+            setStyles(transformedStyles);
+          }
+        } catch (stylesErr) {
+          console.error("Error loading styles:", stylesErr);
+          // Si falla cargar estilos, simplemente no mostramos la sección
+          setStyles([]);
+        }
 
         // Load saved session
         const saved = localStorage.getItem(`client_${data.organizationId || slug}`);
@@ -354,37 +396,39 @@ export default function PublicBookingPage() {
         )}
 
             {/* Trending Styles */}
-            <div className="px-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 
-                  className="text-lg font-bold"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  Cortes en Tendencia
-                </h3>
-                <span 
-                  className="text-xs uppercase tracking-wider cursor-pointer hover:opacity-80"
-                  style={{ color: accentColor }}
-                >
-                  Ver todo →
-                </span>
+            {styles.length > 0 && (
+              <div className="px-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 
+                    className="text-lg font-bold"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
+                    Cortes en Tendencia
+                  </h3>
+                  <span 
+                    className="text-xs uppercase tracking-wider cursor-pointer hover:opacity-80"
+                    style={{ color: accentColor }}
+                  >
+                    Ver todo →
+                  </span>
+                </div>
+                <div className="flex gap-3 overflow-x-auto pb-4 -mx-6 px-6 scrollbar-hide">
+                  {styles.map((trend) => (
+                    <TrendCard
+                      key={trend.id}
+                      name={trend.name}
+                      category={trend.category}
+                      image={trend.image}
+                      accentColor={accentColor}
+                      onClick={() => {
+                        setSelectedTrend(trend);
+                        setIsTrendModalOpen(true);
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
-              <div className="flex gap-3 overflow-x-auto pb-4 -mx-6 px-6 scrollbar-hide">
-                {trendingStyles.map((trend) => (
-                  <TrendCard
-                    key={trend.id}
-                    name={trend.name}
-                    category={trend.category}
-                    image={trend.image}
-                    accentColor={accentColor}
-                    onClick={() => {
-                      setSelectedTrend(trend);
-                      setIsTrendModalOpen(true);
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
+            )}
 
             {/* Services Preview */}
             <div className="px-6">

@@ -46,7 +46,7 @@ export async function sendBookingConfirmationEmail(data: BookingEmailData) {
   try {
     const resend = getResend();
     const { data: emailData, error } = await resend.emails.send({
-      from: `${businessName} <onboarding@resend.dev>`,
+      from: `${businessName} <reservas@codetix.es>`,
       to: clientEmail,
       subject: `✅ Reserva confirmada - ${businessName}`,
       html: `
@@ -168,7 +168,7 @@ export async function sendBookingReminderEmail(data: BookingEmailData) {
   try {
     const resend = getResend();
     const { data: emailData, error } = await resend.emails.send({
-      from: `${businessName} <onboarding@resend.dev>`,
+      from: `${businessName} <reservas@codetix.es>`,
       to: clientEmail,
       subject: `📅 Recordatorio: Tu cita es mañana - ${businessName}`,
       html: `
@@ -255,13 +255,13 @@ export async function sendBookingReminderEmail(data: BookingEmailData) {
     });
 
     if (error) {
-      console.error('Error sending reminder email:', error);
-      return { success: false, error };
+      console.error('Error sending reminder email:', JSON.stringify(error, null, 2));
+      return { success: false, error: error.message };
     }
 
     return { success: true, data: emailData };
   } catch (error) {
-    console.error('Error sending reminder email:', error);
+    console.error('Error sending reminder email:', JSON.stringify(error, null, 2));
     return { success: false, error };
   }
 }
