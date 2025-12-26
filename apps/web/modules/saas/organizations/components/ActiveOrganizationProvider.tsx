@@ -141,8 +141,8 @@ export function ActiveOrganizationProvider({
 		// Sincronizar si:
 		// 1. No hay organización activa en la sesión (undefined)
 		// 2. O la organización activa en la sesión no coincide con la de la URL
-		const needsSync = !session?.session?.activeOrganizationId || 
-		                  session.session.activeOrganizationId !== activeOrganization.id;
+		const needsSync = !session?.activeOrganizationId || 
+		                  session.activeOrganizationId !== activeOrganization.id;
 
 		if (needsSync && !syncingRef.current) {
 			syncingRef.current = true;
@@ -153,7 +153,7 @@ export function ActiveOrganizationProvider({
 	}, [
 		activeOrganizationSlug,
 		activeOrganization?.id,
-		session?.session?.activeOrganizationId,
+		session?.activeOrganizationId,
 	]);
 
 	useEffect(() => {
