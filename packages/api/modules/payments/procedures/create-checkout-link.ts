@@ -34,7 +34,7 @@ export const createCheckoutLink = protectedProcedure
 			context: { user },
 		}) => {
 			if (!productId || productId === "undefined" || productId === "null") {
-				throw new ORPCError("BAD_REQUEST", "Invalid productId");
+				throw new ORPCError({ code: "BAD_REQUEST", message: "Invalid productId" });
 			}
 
 			const customerId = await getCustomerIdFromEntity(
@@ -54,7 +54,7 @@ export const createCheckoutLink = protectedProcedure
 			);
 
 			if (!plan) {
-				throw new ORPCError("NOT_FOUND", "Plan not found for productId");
+				throw new ORPCError({ code: "NOT_FOUND", message: "Plan not found for productId" });
 			}
 
 			const price = plan?.[1].prices?.find(
@@ -62,7 +62,7 @@ export const createCheckoutLink = protectedProcedure
 			);
 
 			if (!price) {
-				throw new ORPCError("NOT_FOUND", "Price not found");
+				throw new ORPCError({ code: "NOT_FOUND", message: "Price not found" });
 			}
 			const trialPeriodDays =
 				price && "trialPeriodDays" in price
@@ -74,7 +74,7 @@ export const createCheckoutLink = protectedProcedure
 				: undefined;
 
 			if (organization === null) {
-				throw new ORPCError("NOT_FOUND");
+				throw new ORPCError({ code: "NOT_FOUND" });
 			}
 
 			const seats =
@@ -98,13 +98,13 @@ export const createCheckoutLink = protectedProcedure
 				});
 
 				if (!checkoutLink) {
-					throw new ORPCError("INTERNAL_SERVER_ERROR");
+					throw new ORPCError({ code: "INTERNAL_SERVER_ERROR" });
 				}
 
 				return { checkoutLink };
 			} catch (e) {
 				logger.error(e);
-				throw new ORPCError("INTERNAL_SERVER_ERROR");
+				throw new ORPCError({ code: "INTERNAL_SERVER_ERROR" });
 			}
 		},
 	);
