@@ -118,3 +118,4 @@ export default function TrendModal({ trend, isOpen, onClose, onBook, accentColor
 }
 
 
+

@@ -8,3 +8,4 @@ ALTER TABLE bookings ADD COLUMN IF NOT EXISTS client_profile_id UUID REFERENCES 
 UPDATE services SET xp_value = GREATEST(50, ROUND(price * 2)) WHERE xp_value IS NULL OR xp_value = 100;
 
 
+

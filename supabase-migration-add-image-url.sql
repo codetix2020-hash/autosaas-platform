@@ -14,3 +14,4 @@ WHERE image_url IS NOT NULL;
 COMMENT ON COLUMN content_calendar.image_url IS 'URL of AI-generated image (DALL-E 3)';
 
 
+

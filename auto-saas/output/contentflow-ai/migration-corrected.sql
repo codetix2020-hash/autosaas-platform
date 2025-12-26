@@ -82,3 +82,4 @@ WHERE table_schema = 'public'
 AND table_name IN ('agencies', 'agency_clients', 'content_calendar');
 
 
+

@@ -155,3 +155,4 @@ COMMENT ON TABLE earned_rewards IS 'Recompensas ganadas y su estado de uso';
 COMMENT ON TABLE cut_photos IS 'Fotos de cortes para historial visual del cliente';
 
 
+

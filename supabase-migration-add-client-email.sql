@@ -12,3 +12,4 @@ CREATE INDEX IF NOT EXISTS idx_agency_clients_email ON agency_clients(email);
 COMMENT ON COLUMN agency_clients.email IS 'Client email for sending brief links and notifications';
 
 
+

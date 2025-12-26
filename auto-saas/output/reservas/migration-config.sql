@@ -60,3 +60,4 @@ CREATE POLICY "business_config_public_read" ON business_config
     USING (true);
 
 
+
