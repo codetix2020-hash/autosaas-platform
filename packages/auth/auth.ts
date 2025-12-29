@@ -39,7 +39,12 @@ const appUrl = getBaseUrl();
 
 export const auth = betterAuth({
 	baseURL: appUrl,
-	trustedOrigins: [appUrl],
+	trustedOrigins: [
+		"http://localhost:3000",
+		"http://localhost:8000",
+		"https://autosaas-platform-production.up.railway.app",
+		appUrl,
+	],
 	appName: config.appName,
 	database: prismaAdapter(db, {
 		provider: "postgresql",
